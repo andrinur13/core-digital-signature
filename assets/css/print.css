@@ -1,0 +1,101 @@
+/* CSS Document */
+
+#page-cetak {
+   clear: both;
+   font-family: Tahoma, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   overflow: hidden;
+   padding: 1.0cm 1.0cm;
+}
+
+#page-cetak h1 {
+   font-size: 24px;
+   margin: 0px 0px 0px 0px;
+   padding: 4px 0px 0px 0px;
+}
+
+#page-cetak h2 {
+   font-size: 16px;
+   /* text-align: center; */
+   margin: 0px 0px 0px 0px;
+   padding: 0px 0px 0px 0px;
+}
+
+#page-cetak h3 {
+   font-size: 14px;
+   margin: 0px 0px 0px 0px;
+   padding: 0px 0px 0px 0px;
+}
+
+#page-cetak h4 {
+   font-size: 12px;
+   text-align: center;
+   font-family: Tahoma, Arial, Helvetica, sans-serif;
+   margin: 0px 0px 0px 0px;
+   padding: 0px 0px 0px 0px;
+}
+
+#page-cetak p {
+   font-size: 12px;
+   font-family: Tahoma, Arial, Helvetica, sans-serif;
+   line-height: 20px;
+   margin: 0px 0px 0px 0px;
+   padding: 0px 0px 0px 0px;
+}
+
+.header-cetak {
+   margin: 0px 0px 20px 0px;
+   padding: 0px 0px 0px 0px;
+}
+
+.header-cetak img {
+   float: left;
+   margin: 0px 10px 0px 0px;
+   padding: 0px 0px 0px 0px;
+}
+
+.signature {
+   float: right;
+   text-align: center;
+   width: 8.0cm;
+   margin: 30px 0px 0px 0px;
+   padding: 0px 0px 0px 0px;
+}
+
+.table-common th {
+   font-weight: bold;
+   text-align: left;
+   vertical-align: top;
+   margin: 0px 0px 0px 0px;
+   padding: 0px 20px 3px 0px;
+}
+
+.table-common td {
+   vertical-align: top;
+   margin: 0px 0px 0px 0px;
+   padding: 0px 15px 3px 0px;
+}
+
+.table-data {
+   border: 1px solid #000000;
+   font-size: 12px;
+   font-family: Tahoma, Arial, Helvetica, sans-serif;
+   border-collapse: collapse;
+   margin: 0px 0px 0px 0px;
+   padding: 0px 0px 0px 0px;
+}
+
+.table-data th {
+   background-color: #EEEEEE;
+   border: 1px solid #000000;
+   text-align: center;
+   margin: 0px 0px 0px 0px;
+   padding: 3px 6px 3px 6px;
+}
+
+.table-data td {
+   border: 1px solid #000000;
+   vertical-align: top;
+   margin: 0px 0px 0px 0px;
+   padding: 2px 6px 2px 6px;
+}

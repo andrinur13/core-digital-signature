@@ -32,6 +32,18 @@ class M_Ppg extends CI_Model
         return null;
     }
 
+
+    public function getDataDetailWithDocumentId($id) {
+        $query = $this->db->where('nomorDokumen', $id)->get('dokumen_ppg');
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        }
+    
+        return null;
+    }
+
+
     public function getData() {
         $query = $this->db->where('pathDokumen is NULL')->get('dokumen_ppg');
 

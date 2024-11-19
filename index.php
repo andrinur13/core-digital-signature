@@ -72,7 +72,7 @@ switch (ENVIRONMENT)
 
 	case 'testing':
 	case 'production':
-		ini_set('display_errors', 0);
+		ini_set('display_errors', 01);
 		if (version_compare(PHP_VERSION, '5.3', '>='))
 		{
 			error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
@@ -227,7 +227,7 @@ switch (ENVIRONMENT)
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
 	// Path to the system directory
-	require_once dirname(__FILE__) . '/vendor/autoload.php';
+	// require_once dirname(__FILE__) . '/vendor/autoload.php';
 	define('BASEPATH', $system_path);
 
 	// Path to the front controller (this file) directory

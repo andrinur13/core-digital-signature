@@ -1,7 +1,12 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require APPPATH.'third_party/endroid_qrcode/autoload.php';
+		
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\LabelAlignment;
 use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Response\QrCodeResponse;
 
 class Ppg extends Dashboard_Controller {
     public function __construct() {
@@ -57,7 +62,7 @@ class Ppg extends Dashboard_Controller {
         if (!file_exists($template_sertifikat)) {
             show_error('Template sertifikat tidak ditemukan');
         }
-
+        
         // Memuat gambar template
         $image = imagecreatefromjpeg($template_sertifikat);
         if (!$image) {
@@ -91,7 +96,7 @@ class Ppg extends Dashboard_Controller {
         // Menambahkan teks NIM di tengah
         $this->addTextToImage($image, $font_path, 'NIM : ' . $data->nimMahasiswa, $font_size_nim, $black, 780);
 
-        $qrCode = new QrCode('https://digi.andridev.id/index.php/validasi/' . $data->nomorDokumen);
+        $qrCode = new QrCode('https://digi.andridev.id/index.php/validasi/' . encode($data->nomorDokumen));
         $qrCode->setSize(100); // Ukuran QR Code (misalnya 150px)
         $qrCode->setMargin(0);
         // $qrCode->setBackgroundColor([0, 0, 0, 0]);
@@ -102,7 +107,7 @@ class Ppg extends Dashboard_Controller {
         $qrCode->writeFile($qrCodePath);
         $this->resizeQRCode($qrCodePath, 100, 100);
 
-        $this->addQRCodeToImage($image, $qrCodePath, $width - 630, $height - 280); // Posisi QR Code di pojok kanan bawah
+        $this->addQRCodeToImage($image, $qrCodePath, $width - 620, $height - 280); // Posisi QR Code di pojok kanan bawah
 
         // Path output sertifikat
         $pathDoc = 'uploads/sertifikat/ppg/' . strtolower($this->generateRandomString(32)) . '_sertifikat.jpg';

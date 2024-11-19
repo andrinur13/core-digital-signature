@@ -227,6 +227,7 @@ switch (ENVIRONMENT)
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
 	// Path to the system directory
+	require_once dirname(__FILE__) . '/vendor/autoload.php';
 	define('BASEPATH', $system_path);
 
 	// Path to the front controller (this file) directory

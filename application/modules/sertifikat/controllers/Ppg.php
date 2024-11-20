@@ -58,7 +58,7 @@ class Ppg extends Dashboard_Controller {
     public function generate($data)
     {
         // Path ke template sertifikat
-        $template_sertifikat = FCPATH . 'assets/img/sertifikat_ppg.jpg';
+        $template_sertifikat = FCPATH . 'assets/img/white_bg.jpeg';
         if (!file_exists($template_sertifikat)) {
             show_error('Template sertifikat tidak ditemukan');
         }
@@ -71,6 +71,8 @@ class Ppg extends Dashboard_Controller {
 
         // Path ke font kustom
         $font_path = FCPATH . 'assets/fonts/font.ttf';
+        $fontArial = FCPATH . 'assets/fonts/Arial.ttf';
+        $fontArialBold = FCPATH . 'assets/fonts/Arial_Bold.ttf';
         if (!file_exists($font_path)) {
             show_error('Font tidak ditemukan');
         }
@@ -82,36 +84,82 @@ class Ppg extends Dashboard_Controller {
         // Warna untuk teks (Hitam dalam hal ini)
         $black = imagecolorallocate($image, 0, 0, 0); // RGB untuk hitam
 
-        $font_size = 20;
+        $font_size = 34;
         // Menambahkan teks nama di tengah
-        $this->addTextToImage($image, $font_path, 'Nomor : ' . $data->nomorPpgMahasiswa, $font_size, $black, 530);
+        $this->addTextToImage($image, $fontArialBold, 'Nomor: ' . $data->nomorPpgMahasiswa, $font_size, $black, 1010);
 
+        // text wording alinea 1
+        $textWording1 = [
+            'Berdasarkan Surat Keputusan Menteri Pendidikan, Kebudayaan, Riset dan Teknologi Nomor 825/E/O/2022',
+            'tanggal 11 November 2022 Tentang Izin Pembukaan Program Studi Pendidikan Profesi Guru Program Profesi Pada',
+            'Universitas Ahmad Dahlan di Yogyakarta Yang diselenggarakan oleh Persyarikatan Muhammadiyah,',
+            'Rektor Universitas Ahmad Dahlan menyatakan bahwa:'
+        ];
+
+        $this->addTextToImage($image, $fontArial, $textWording1[0], $font_size, $black, 1090);
+        $this->addTextToImage($image, $fontArial, $textWording1[1], $font_size, $black, 1140);
+        $this->addTextToImage($image, $fontArial, $textWording1[2], $font_size, $black, 1200);
+        $this->addTextToImage($image, $fontArial, $textWording1[3], $font_size, $black, 1260);
+        
         // Ukuran font untuk nama
-        $font_size = 38;
         // Menambahkan teks nama di tengah
-        $this->addTextToImage($image, $font_path, $data->namaMahasiswa, $font_size, $black, 730);
+        $this->addTextToImage($image, $fontArialBold, $data->namaMahasiswa, 50, $black, 1350);
+        $this->addTextToImage($image, $fontArialBold, 'Nomor Induk Mahasiswa: ' . $data->nimMahasiswa, 36, $black, 1410);
 
-        // Ukuran font untuk NIM
-        $font_size_nim = 20;
-        // Menambahkan teks NIM di tengah
-        $this->addTextToImage($image, $font_path, 'NIM : ' . $data->nimMahasiswa, $font_size_nim, $black, 780);
+
+        $textWording2 = [
+            "lahir di $data->kotaLahir pada " . tanggal_terbilang($data->tanggalLahir),
+            'telah memenuhi semua syarat penyelesaian Pendidikan Profesi Guru dan LULUS Uji Kompetensi Peserta Pendidikan Profesi Guru.',
+            'Kepadanya diberikan sebutan profesi GURU (Gr.) ' . $data->namaGelarGuru,
+            'sesuai hak dan kewajiban yang melekat pada sebutan profesi tersebut.'
+        ];
+
+        $this->addTextToImage($image, $fontArial, $textWording2[0], 34, $black, 1480);
+        $this->addTextToImage($image, $fontArial, $textWording2[1], 34, $black, 1540);
+        $this->addTextToImage($image, $fontArial, $textWording2[2], 34, $black, 1600);
+        $this->addTextToImage($image, $fontArial, $textWording2[3], 34, $black, 1660);
 
         $qrCode = new QrCode('https://digi.andridev.id/index.php/validasi/' . encode($data->nomorDokumen));
-        $qrCode->setSize(100); // Ukuran QR Code (misalnya 150px)
+        $qrCode->setSize(290); // Ukuran QR Code (misalnya 150px)
         $qrCode->setMargin(0);
         // $qrCode->setBackgroundColor([0, 0, 0, 0]);
         // $qrCode->setErrorCorrectionLevel(ErrorCorrectionLevel::HIGH);
 
         // Menyimpan QR Code ke file sementara
-        $qrCodePath = FCPATH . 'uploads/sertifikat/ppg/' . strtolower($this->generateRandomString(32)) . '.png';
+        $qrCodePath = FCPATH . 'uploads/sertifikat/ppg/qrcode/' . strtolower($this->generateRandomString(32)) . '.png';
         $qrCode->writeFile($qrCodePath);
-        $this->resizeQRCode($qrCodePath, 100, 100);
+        $this->resizeQRCode($qrCodePath, 290, 290);
 
-        $this->addQRCodeToImage($image, $qrCodePath, $width - 620, $height - 280); // Posisi QR Code di pojok kanan bawah
+        $this->addQRCodeToImage($image, $qrCodePath, 420, $height - 720); // Posisi QR Code di pojok kanan bawah
+
+        $signatures = [
+            'Yogyakarta, ' .format_tanggal($data->tanggalSigned),
+            'Rektor,',
+            'Prof. Dr. Muchlas, M.T.'
+        ];
+
+        $this->addTextToImageWithCustomCoordinate($image, $fontArial, $signatures[0], 38, $black, 2030, 1800);
+        $this->addTextToImageWithCustomCoordinate($image, $fontArial, $signatures[1], 38, $black, 2030, 1860);
+        $this->addTextToImageWithCustomCoordinate($image, $fontArial, $signatures[2], 38, $black, 2030, 2160);
+
+
+        $this->addCustomImageToImage($image, FCPATH . $data->photoPath, 840, $height - 756); // Posisi QR Code di pojok kanan bawah
+
 
         // Path output sertifikat
-        $pathDoc = 'uploads/sertifikat/ppg/' . strtolower($this->generateRandomString(32)) . '_sertifikat.jpg';
+        $pathDoc = 'uploads/sertifikat/ppg/sertifikat/' . strtolower($this->generateRandomString(32)) . '_sertifikat.jpg';
         $output_path = FCPATH . $pathDoc;
+
+        header('Content-Type: image/jpeg');
+
+        if (!imagejpeg($image)) {
+            show_error('Gagal menghasilkan sertifikat');
+        }
+    
+        // Membersihkan memori setelah gambar selesai diproses
+        imagedestroy($image);
+        unlink($qrCodePath); // Menghapus file QR Code sementara
+        die;
 
 
         // Menyimpan file gambar
@@ -122,6 +170,8 @@ class Ppg extends Dashboard_Controller {
         $data = $this->M_Ppg->update($data->dokumenPpgId, [
             'pathDokumen' => $pathDoc,
         ]);
+
+
 
         // Membersihkan memori
         // imagedestroy($image);
@@ -145,6 +195,17 @@ class Ppg extends Dashboard_Controller {
         imagettftext($image, $font_size, 0, $x_position, $y_position, $color, $font_path, $text);
     }
 
+    private function addTextToImageWithCustomCoordinate($image, $font_path, $text, $font_size, $color, $x_position, $y_position)
+    {
+        // Menghitung bounding box untuk teks
+        $text_box = imagettfbbox($font_size, 0, $font_path, $text);
+
+        // Menghitung posisi horizontal dan vertikal agar terpusat
+        
+        // Menambahkan teks ke gambar
+        imagettftext($image, $font_size, 0, $x_position, $y_position, $color, $font_path, $text);
+    }
+
     private function addQRCodeToImage($image, $qrCodePath, $x_position, $y_position)
     {
         // Memuat gambar QR Code
@@ -158,6 +219,35 @@ class Ppg extends Dashboard_Controller {
 
         // Membersihkan memori
         imagedestroy($qrImage);
+    }
+
+    private function addCustomImageToImage($image, $qrCodePath, $x_position, $y_position)
+    {
+        // Memuat gambar QR Code
+        $customImage = imagecreatefromjpeg($qrCodePath);
+        if (!$customImage) {
+            show_error('Gagal memuat Image');
+        }
+
+        $new_height = 480;
+        $new_width = 350;
+
+        // Mendapatkan ukuran gambar QR Code asli
+        $original_width = imagesx($customImage);
+        $original_height = imagesy($customImage);
+
+        // Membuat gambar baru dengan ukuran yang sudah diskalakan
+        $scaledImage = imagecreatetruecolor($new_width, $new_height);
+
+        // Melakukan scaling gambar QR Code
+        imagecopyresampled($scaledImage, $customImage, 0, 0, 0, 0, $new_width, $new_height, $original_width, $original_height);
+
+        // Menyalin gambar yang sudah diskalakan ke gambar utama
+        imagecopy($image, $scaledImage, $x_position, $y_position, 0, 0, $new_width, $new_height);
+
+        // Menghancurkan gambar-gambar sementara
+        imagedestroy($customImage);
+        imagedestroy($scaledImage);
     }
 
     private function resizeQRCode($qrCodePath, $newWidth, $newHeight)

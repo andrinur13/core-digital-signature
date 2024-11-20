@@ -88,7 +88,7 @@ $autoload['drivers'] = array();
 */
 
 // $autoload['helper'] = array('form', 'url', 'system', 'date');
-$autoload['helper'] = array('form', 'url','system','date','app','file');
+$autoload['helper'] = array('form', 'url','system','date','app','file', 'tanggal', 'tanggal_only');
 
 
 /*

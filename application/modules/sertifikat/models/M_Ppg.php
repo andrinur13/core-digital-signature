@@ -61,4 +61,8 @@ class M_Ppg extends CI_Model
     
         return null;
     }
+
+    public function insert_certificate($data) {
+        return $this->db->insert('dokumen_ppg', $data); // Ganti 'ppg_certificates' dengan nama tabel Anda
+    }
 }

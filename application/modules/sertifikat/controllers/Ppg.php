@@ -14,6 +14,7 @@ class Ppg extends Dashboard_Controller {
 		
 		
 		$this->load->model($this->path.'/M_Ppg');
+        $this->load->library('upload');
         
         
 		// $this->load->helper($this->master.'/general');
@@ -35,6 +36,84 @@ class Ppg extends Dashboard_Controller {
 		$this->template->set_breadcrumb( 'Sertifikat PPG' , '' );
 		
 		$this->template->build('sertifikat/v_index_ppg', $tpl);
+    }
+
+    public function add_certificate() {
+        // Validasi input
+        $this->form_validation->set_rules('nomorDokumen', 'Nomor Dokumen', 'required|trim');
+        $this->form_validation->set_rules('nomorPpgMahasiswa', 'Nomor PPG Mahasiswa', 'required|trim');
+        $this->form_validation->set_rules('namaMahasiswa', 'Nama Mahasiswa', 'required|trim');
+        $this->form_validation->set_rules('nimMahasiswa', 'NIM Mahasiswa', 'required|trim');
+        $this->form_validation->set_rules('kotaLahir', 'Kota Lahir', 'required|trim');
+        $this->form_validation->set_rules('tanggalLahir', 'Tanggal Lahir', 'required|trim');
+        $this->form_validation->set_rules('namaGelarGuru', 'Nama Gelar Guru', 'required|trim');
+        $this->form_validation->set_rules('tanggalSigned', 'Tanggal Ditandatangani', 'required|trim');
+
+        if ($this->form_validation->run() == FALSE) {
+            // Jika validasi gagal
+            $this->session->set_flashdata('message_form', [
+                'status' => 'danger',
+                'title' => 'Gagal!',
+                'message' => validation_errors()
+            ]);
+            redirect('Ppg');
+        }
+
+        // Upload foto
+        $config['upload_path'] = './uploads/sertifikat/ppg/photo/'; // Folder tujuan
+        $config['allowed_types'] = 'jpg'; // Format yang diizinkan
+        $config['max_size'] = 2048; // Maksimal ukuran file dalam KB (2MB)
+        $config['file_name'] = 'photo_' . encode(time()) . time(); // Nama file unik
+
+        $this->upload->initialize($config);
+
+        if (!$this->upload->do_upload('photoPath')) {
+            // Jika upload gagal
+            $this->session->set_flashdata('message_form', [
+                'status' => 'danger',
+                'title' => 'Gagal!',
+                'message' => $this->upload->display_errors()
+            ]);
+            redirect('sertifikat/Ppg');
+        } else {
+            // Jika upload berhasil
+            $fileData = $this->upload->data();
+            $photoPath = 'uploads/sertifikat/ppg/photo/' . $fileData['file_name']; // Simpan path file
+
+            // Simpan data ke database
+            $data = [
+                'nomorDokumen' => $this->input->post('nomorDokumen', TRUE),
+                'nomorPpgMahasiswa' => $this->input->post('nomorPpgMahasiswa', TRUE),
+                'namaMahasiswa' => $this->input->post('namaMahasiswa', TRUE),
+                'nimMahasiswa' => $this->input->post('nimMahasiswa', TRUE),
+                'kotaLahir' => $this->input->post('kotaLahir', TRUE),
+                'tanggalLahir' => $this->input->post('tanggalLahir', TRUE),
+                'namaGelarGuru' => $this->input->post('namaGelarGuru', TRUE),
+                'photoPath' => $photoPath,
+                'tanggalSigned' => $this->input->post('tanggalSigned', TRUE),
+                'dokUserAddDate' => date('Y-m-d H:i:s'),
+                'dokUserUpdateDate' => date('Y-m-d H:i:s'),
+            ];
+
+            $insert = $this->M_Ppg->insert_certificate($data);
+
+            if ($insert) {
+                // Jika berhasil disimpan
+                $this->session->set_flashdata('message_form', [
+                    'status' => 'success',
+                    'title' => 'Berhasil!',
+                    'message' => 'Data sertifikat berhasil disimpan.'
+                ]);
+            } else {
+                // Jika gagal disimpan
+                $this->session->set_flashdata('message_form', [
+                    'status' => 'danger',
+                    'title' => 'Gagal!',
+                    'message' => 'Terjadi kesalahan saat menyimpan data.'
+                ]);
+            }
+            redirect('sertifikat/Ppg');
+        }
     }
 
     public function pdf($id) {
@@ -128,9 +207,9 @@ class Ppg extends Dashboard_Controller {
         // Menyimpan QR Code ke file sementara
         $qrCodePath = FCPATH . 'uploads/sertifikat/ppg/qrcode/' . strtolower($this->generateRandomString(32)) . '.png';
         $qrCode->writeFile($qrCodePath);
-        $this->resizeQRCode($qrCodePath, 290, 290);
+        $this->resizeQRCode($qrCodePath, 200, 200);
 
-        $this->addQRCodeToImage($image, $qrCodePath, 420, $height - 720); // Posisi QR Code di pojok kanan bawah
+        $this->addQRCodeToImage($image, $qrCodePath, 2030, $height - 590); // Posisi QR Code di pojok kanan bawah
 
         $signatures = [
             'Yogyakarta, ' .format_tanggal($data->tanggalSigned),
@@ -143,23 +222,11 @@ class Ppg extends Dashboard_Controller {
         $this->addTextToImageWithCustomCoordinate($image, $fontArial, $signatures[2], 38, $black, 2030, 2160);
 
 
-        $this->addCustomImageToImage($image, FCPATH . $data->photoPath, 840, $height - 756); // Posisi QR Code di pojok kanan bawah
-
+        $this->addCustomImageToImage($image, FCPATH . $data->photoPath, 1090, $height - 756);
 
         // Path output sertifikat
-        $pathDoc = 'uploads/sertifikat/ppg/sertifikat/' . strtolower($this->generateRandomString(32)) . '_sertifikat.jpg';
+        $pathDoc = 'uploads/sertifikat/ppg/sertifikat/' . strtolower($this->generateRandomString(16)) . '_sertifikat.jpg';
         $output_path = FCPATH . $pathDoc;
-
-        header('Content-Type: image/jpeg');
-
-        if (!imagejpeg($image)) {
-            show_error('Gagal menghasilkan sertifikat');
-        }
-    
-        // Membersihkan memori setelah gambar selesai diproses
-        imagedestroy($image);
-        unlink($qrCodePath); // Menghapus file QR Code sementara
-        die;
 
 
         // Menyimpan file gambar
@@ -170,8 +237,6 @@ class Ppg extends Dashboard_Controller {
         $data = $this->M_Ppg->update($data->dokumenPpgId, [
             'pathDokumen' => $pathDoc,
         ]);
-
-
 
         // Membersihkan memori
         // imagedestroy($image);

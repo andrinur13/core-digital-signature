@@ -16,10 +16,10 @@
     <div class="card-header">
         <h4 class="card-title"><strong>Data Sertifikat PPG</strong></h4>
         <div class="btn-toolbar">
-            <a id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary" href="Ppg/generate_all">
+            <!-- <a id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary" href="Ppg/generate_all">
                 Generate
                 <label><i class="ti-reload"></i></label>
-            </a>
+            </a> -->
             <button type="button" id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addCertificateModal">
                 Tambah Sertifikat
                 <label><i class="ti-plus"></i></label>
@@ -34,6 +34,7 @@
                     <th>No Dokumen</th>
                     <th>Mahasiswa</th>
                     <th>File</th>
+                    <th>File Signed</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -41,7 +42,7 @@
                 <?php foreach ($dt_ppgs as $index => $certificate): ?>
                     <tr>
                         <td> <?= $index + 1; ?> </td>
-                        <td> <?= $certificate->nomorDokumen ?> </td>
+                        <td> <?= $certificate->nomorPpgMahasiswa ?> </td>
                         <td> <?= $certificate->namaMahasiswa ?> </td>
                         <td>
                             <?php if($certificate->pathDokumen): ?>
@@ -51,15 +52,32 @@
                                     data-target="#certificatePreviewModal" 
                                     data-image="<?= base_url($certificate->pathDokumen) ?>" 
                                     data-download="<?= base_url($certificate->pathDokumen) ?>"> 
-                                Lihat Sertifikat
+                                Lihat Dokumen 
                             </button> 
                             <?php else: ?>
-                            <span class="btn btn-sm btn-danger"> Dokumen Belum Digenerate </span>
+                            <span class="btn btn-sm btn-danger"> Dokumen Belum Upload </span>
                             <?php endif ?>
                         </td>
                         <td>
-                            <a href="/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-danger"> Button 1 </a>
-                            <a href="/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-danger"> Button 2 </a>
+                            <?php if($certificate->pathDokumenSigned): ?>
+                            <!-- Update the download link to trigger the modal -->
+                            <button class="btn btn-sm btn-primary" 
+                                    data-toggle="modal" 
+                                    data-target="#certificatePreviewModal" 
+                                    data-image="<?= base_url($certificate->pathDokumenSigned) ?>" 
+                                    data-download="<?= base_url($certificate->pathDokumenSigned) ?>"> 
+                                Lihat Dokumen 
+                            </button> 
+                            <?php else: ?>
+                            <span class="text-danger"> Dokumen Signed Belum Ada </span>
+                            <?php endif ?>
+                        </td>
+                        <td>
+                            <?php if(!$certificate->pathDokumenSigned) : ?>
+                            <a title="Generate PDF" href="Ppg/generate_detail/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-primary"> Generate </a>
+                            <a title="Edit Dokumen" href="Ppg/detail/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-secondary"> Edit </a>
+                            <?php endif; ?>
+                            <a title="Hapus" href="/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-danger"> Hapus </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -81,10 +99,6 @@
             <form action="Ppg/add_certificate" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="nomorDokumen">Nomor Dokumen UAD</label>
-                        <input type="text" class="form-control" id="nomorDokumen" name="nomorDokumen" placeholder="Masukkan Nomor Dokumen Internal UAD" required>
-                    </div>
-                    <div class="form-group">
                         <label for="nomorPpgMahasiswa">Nomor Dokumen PPG</label>
                         <input type="text" class="form-control" id="nomorPpgMahasiswa" name="nomorPpgMahasiswa" placeholder="Masukkan Nomor Dokumen PPG" required>
                     </div>
@@ -105,16 +119,12 @@
                         <input type="date" class="form-control" id="tanggalLahir" name="tanggalLahir" placeholder="Masukkan Tgl Lahir Mahasiswa" required>
                     </div>
                     <div class="form-group">
-                        <label for="namaGelarGuru">Nama Gelar Guru</label>
+                        <label for="namaGelarGuru">Nama Gelar Guru (Bidang)</label>
                         <input type="text" class="form-control" id="namaGelarGuru" name="namaGelarGuru" placeholder="Ex: Indonesia, Bahasa Inggris" required>
                     </div>
                     <div class="form-group">
-                        <label for="photoPath">Unggah Foto Profil</label>
-                        <input type="file" class="form-control-file" id="photoPath" name="photoPath" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tanggalSigned">Tgl Signed Dokumen</label>
-                        <input type="date" class="form-control" id="tanggalSigned" name="tanggalSigned" placeholder="Masukkan Tgl Lahir Mahasiswa" required>
+                        <label for="pathDokumen">Unggah Dokumen PPG</label>
+                        <input type="file" class="form-control-file" id="pathDokumen" name="pathDokumen" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -138,8 +148,8 @@
             </div>
             <div class="modal-body">
                 <div class="text-center">
-                    <!-- Sertifikat akan ditampilkan di sini -->
-                    <img id="modal-certificate-image" src="" alt="Sertifikat" class="img-fluid">
+                    <!-- PDF Viewer container -->
+                    <canvas id="certificate-pdf-viewer" style="width: 100%; height: auto;"></canvas>
                 </div>
             </div>
             <div class="modal-footer">
@@ -150,15 +160,84 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 <script>
-    // JavaScript to dynamically set the certificate source and download link
-    $('#certificatePreviewModal').on('show.bs.modal', function (e) {
-        var button = $(e.relatedTarget); // Button that triggered the modal
-        var imageUrl = button.data('image'); // Extract image URL from data attribute
-        var downloadUrl = button.data('download'); // Extract download URL from data attribute
+    // JavaScript to dynamically set the certificate source and preview PDF
+$('#certificatePreviewModal').on('show.bs.modal', function (e) {
+    var button = $(e.relatedTarget); // Button that triggered the modal
+    var pdfUrl = button.data('image'); // Extract PDF URL from data attribute
+    var downloadUrl = button.data('download'); // Extract download URL from data attribute
 
-        // Set the image and download link
-        $('#modal-certificate-image').attr('src', imageUrl);
-        $('#downloadCertificate').attr('href', downloadUrl);
-    });
+    // Set the download link
+    $('#downloadCertificate').attr('href', downloadUrl);
+
+    // Get the canvas element and its context
+    var canvas = $('#certificate-pdf-viewer')[0];
+    var context = canvas.getContext('2d');
+
+    // Clear any previous content in the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas content
+    canvas.width = canvas.width; // Reset the width
+    canvas.height = canvas.height; // Reset the height
+
+    // If the PDF URL exists
+    if (pdfUrl) {
+        // Attempt to load the PDF
+        pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+            // Fetch the first page of the PDF
+            pdf.getPage(1).then(function(page) {
+                var viewport = page.getViewport({ scale: 1.5 });
+
+                // Set canvas size to match the PDF page
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                // Render the page into the canvas
+                page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                });
+            }).catch(function(error) {
+                // If there's an error rendering the PDF page
+                console.error('Error rendering PDF page: ', error);
+                // Draw the error message on the canvas
+                drawTextOnCanvas(context, canvas, 'Dokumen Tidak Ada');
+            });
+        }).catch(function(error) {
+            // If there's an error loading the PDF document
+            console.error('Error loading PDF: ', error);
+            // Draw the error message on the canvas
+            drawTextOnCanvas(context, canvas, 'Dokumen Tidak Ada');
+        });
+    } else {
+        // Handle case when there's no valid PDF URL (file missing or not a PDF)
+        drawTextOnCanvas(context, canvas, 'Dokumen Tidak Ada');
+    }
+});
+
+// Function to draw the "Dokumen Tidak Ada" text on the canvas
+function drawTextOnCanvas(context, canvas, text) {
+    // Set text style
+    context.font = '24px Arial';
+    context.fillStyle = '#ff0000'; // Red color for the error message
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+
+    // Draw the text on the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height); // Clear any previous content
+    context.fillText(text, canvas.width / 2, canvas.height / 2); // Center the text on the canvas
+}
+
+// Reset the canvas when the modal is closed
+$('#certificatePreviewModal').on('hidden.bs.modal', function () {
+    // Get the canvas element and its context
+    var canvas = $('#certificate-pdf-viewer')[0];
+    var context = canvas.getContext('2d');
+
+    // Clear the canvas drawing context and reset dimensions
+    context.clearRect(0, 0, canvas.width, canvas.height); // Clear the content
+    canvas.width = canvas.width; // Reset width
+    canvas.height = canvas.height; // Reset height
+});
+
 </script>

@@ -65,4 +65,10 @@ class M_Ppg extends CI_Model
     public function insert_certificate($data) {
         return $this->db->insert('dokumen_ppg', $data); // Ganti 'ppg_certificates' dengan nama tabel Anda
     }
+
+    public function update_ppg($id, $data)
+    {
+        $this->db->where('dokumenPpgId', $id);  // Assuming 'dokumenPpgId' is the unique identifier
+        return $this->db->update('dokumen_ppg', $data);  // Replace 'ppg_table' with your actual table name
+    }
 }

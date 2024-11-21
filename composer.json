@@ -1,5 +1,7 @@
 {
     "require": {
-        "endroid/qr-code": "^3.9"
+        "endroid/qr-code": "^3.9",
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "^2.6"
     }
 }

@@ -2,11 +2,19 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 require APPPATH.'third_party/endroid_qrcode/autoload.php';
+// require APPPATH.'third_party/fpdi/src/autoload.php';
+
+require APPPATH . 'third_party/fpdf/fpdf.php';
+require APPPATH . 'third_party/fpdi/src/autoload.php';
 		
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\LabelAlignment;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Response\QrCodeResponse;
+use Endroid\QrCode\Writer\PngWriter;
+
+use setasign\Fpdi\PdfReader;
+use setasign\Fpdi\Fpdi;
 
 class Ppg extends Dashboard_Controller {
     public function __construct() {
@@ -15,6 +23,9 @@ class Ppg extends Dashboard_Controller {
 		
 		$this->load->model($this->path.'/M_Ppg');
         $this->load->library('upload');
+        $this->load->library('tcpdf/TCPDF');
+
+        // restrict();
         
         
 		// $this->load->helper($this->master.'/general');
@@ -40,14 +51,12 @@ class Ppg extends Dashboard_Controller {
 
     public function add_certificate() {
         // Validasi input
-        $this->form_validation->set_rules('nomorDokumen', 'Nomor Dokumen', 'required|trim');
         $this->form_validation->set_rules('nomorPpgMahasiswa', 'Nomor PPG Mahasiswa', 'required|trim');
         $this->form_validation->set_rules('namaMahasiswa', 'Nama Mahasiswa', 'required|trim');
         $this->form_validation->set_rules('nimMahasiswa', 'NIM Mahasiswa', 'required|trim');
         $this->form_validation->set_rules('kotaLahir', 'Kota Lahir', 'required|trim');
         $this->form_validation->set_rules('tanggalLahir', 'Tanggal Lahir', 'required|trim');
         $this->form_validation->set_rules('namaGelarGuru', 'Nama Gelar Guru', 'required|trim');
-        $this->form_validation->set_rules('tanggalSigned', 'Tanggal Ditandatangani', 'required|trim');
 
         if ($this->form_validation->run() == FALSE) {
             // Jika validasi gagal
@@ -56,18 +65,18 @@ class Ppg extends Dashboard_Controller {
                 'title' => 'Gagal!',
                 'message' => validation_errors()
             ]);
-            redirect('Ppg');
+            redirect('sertifikat/Ppg');
         }
 
         // Upload foto
-        $config['upload_path'] = './uploads/sertifikat/ppg/photo/'; // Folder tujuan
-        $config['allowed_types'] = 'jpg'; // Format yang diizinkan
+        $config['upload_path'] = './uploads/sertifikat/ppg/sertifikat/'; // Folder tujuan
+        $config['allowed_types'] = 'pdf'; // Format yang diizinkan
         $config['max_size'] = 2048; // Maksimal ukuran file dalam KB (2MB)
         $config['file_name'] = 'photo_' . encode(time()) . time(); // Nama file unik
 
         $this->upload->initialize($config);
 
-        if (!$this->upload->do_upload('photoPath')) {
+        if (!$this->upload->do_upload('pathDokumen')) {
             // Jika upload gagal
             $this->session->set_flashdata('message_form', [
                 'status' => 'danger',
@@ -78,7 +87,7 @@ class Ppg extends Dashboard_Controller {
         } else {
             // Jika upload berhasil
             $fileData = $this->upload->data();
-            $photoPath = 'uploads/sertifikat/ppg/photo/' . $fileData['file_name']; // Simpan path file
+            $documentPath = 'uploads/sertifikat/ppg/sertifikat/' . $fileData['file_name']; // Simpan path file
 
             // Simpan data ke database
             $data = [
@@ -89,7 +98,7 @@ class Ppg extends Dashboard_Controller {
                 'kotaLahir' => $this->input->post('kotaLahir', TRUE),
                 'tanggalLahir' => $this->input->post('tanggalLahir', TRUE),
                 'namaGelarGuru' => $this->input->post('namaGelarGuru', TRUE),
-                'photoPath' => $photoPath,
+                'pathDokumen' => $documentPath,
                 'tanggalSigned' => $this->input->post('tanggalSigned', TRUE),
                 'dokUserAddDate' => date('Y-m-d H:i:s'),
                 'dokUserUpdateDate' => date('Y-m-d H:i:s'),
@@ -348,4 +357,172 @@ class Ppg extends Dashboard_Controller {
         return $randomString;
     }
 
+    public function generate_detail($id)
+    {
+        // Get data related to the certificate (e.g., student number, document path)
+        $data = $this->M_Ppg->getDataDetail($id);
+
+        // Generate QR Code (URL or text data to encode)
+        $qrCode = new \Endroid\QrCode\QrCode('https://digi.andridev.id/index.php/validasi/' . encode($data->nomorPpgMahasiswa));
+        $qrCode->setSize(290);  // Set the size of the QR code
+        $qrCode->setMargin(0);  // Set margin to zero for better control
+
+        // Path to save QR Code image temporarily
+        $qrCodePath = FCPATH . 'uploads/sertifikat/ppg/qrcode/' . strtolower($this->generateRandomString(32)) . '.png';
+        $qrCode->writeFile($qrCodePath);  // Save the QR code as a PNG file
+
+        // Optional: Resize QR Code if needed
+        $this->resizeQRCode($qrCodePath, 200, 200);  // Resize to 200x200 (optional)
+
+        // Path to the existing PDF file (document path from the database)
+        $existingPdfPath = FCPATH . $data->pathDokumen;
+
+        $copyPdfPath = pathinfo($existingPdfPath, PATHINFO_DIRNAME) . '/' . pathinfo($existingPdfPath, PATHINFO_FILENAME) . '_signed.' . pathinfo($existingPdfPath, PATHINFO_EXTENSION);
+        if (!copy($existingPdfPath, $copyPdfPath)) {
+            throw new Exception('Failed to create a copy of the PDF');
+        }
+
+        $copyOfDocumentForSigned = pathinfo($existingPdfPath, PATHINFO_FILENAME) . '_signed.' . pathinfo($existingPdfPath, PATHINFO_EXTENSION);
+
+        // Initialize FPDI to import the existing PDF
+        $pdf = new FPDI();
+
+        // Get the number of pages in the existing PDF
+        $pageCount = $pdf->setSourceFile($copyPdfPath);
+
+        // Loop through each page of the existing PDF and add the QR code
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+            $tplIdx = $pdf->importPage($pageNo);  // Import the page
+            $size = $pdf->getTemplateSize($tplIdx);  // Get the dimensions of the imported page
+            $pageWidth = $size['width'];
+            $pageHeight = $size['height'];
+
+            // Check orientation based on page width and height
+            if ($pageWidth > $pageHeight) {
+                $pdf->AddPage('L', array($pageWidth, $pageHeight));  // Landscape orientation
+            } else {
+                $pdf->AddPage('P', array($pageWidth, $pageHeight));  // Portrait orientation
+            }
+
+            // Use the imported page's content
+            $pdf->useTemplate($tplIdx);
+
+            // Custom coordinates to place the QR Code (e.g., 50 mm from the left and 150 mm from the top)
+            $customX = 186;  // Custom X coordinate (horizontal position)
+            $customY = 154; // Custom Y coordinate (vertical position)
+
+            $qrCodeWidth = 24;  // Set the size of the QR code (adjustable)
+            $qrCodeHeight = 24;
+
+            // Place QR Code at custom coordinates
+            $pdf->Image($qrCodePath, $customX, $customY, $qrCodeWidth, $qrCodeHeight);
+        }
+
+        $pdf->Output('F', $copyPdfPath);
+
+        $updateData = [
+            'pathDokumenSigned' => str_replace(FCPATH, '', $copyPdfPath)  // Save relative path
+        ];
+
+        $this->db->where('dokumenPpgId', $id);
+        $this->db->update('dokumen_ppg', $updateData);
+
+        return redirect('sertifikat/Ppg');
+    }
+
+    public function detail($id) {
+        // Fetch data detail based on the ID
+        $ppg = $this->M_Ppg->getDataDetail($id);
+
+        // Check if the data exists
+        if ($ppg) {
+
+            $data = [
+                'ppg' => $ppg,
+            ];
+
+            $this->template->title( 'Sertifikat PPG' );
+            $this->template->set_breadcrumb( config_item('app_name') , '' );
+            $this->template->set_breadcrumb( 'Sertifikat PPG' , '' );
+            
+            $this->template->build('sertifikat/v_detail_ppg', $data);
+        }
+    }
+
+    public function update($id)
+    {
+        // Load necessary models and libraries
+        $this->load->model('M_Ppg'); // Example model, make sure to adjust to your actual model name
+        $this->load->library('form_validation');
+        $this->load->library('upload');  // Load the upload library for handling file uploads
+
+        // Set validation rules
+        $this->form_validation->set_rules('nomorPpgMahasiswa', 'Nomor Dokumen PPG', 'required');
+        // $this->form_validation->set_rules('namaMahasiswa', 'Nama Mahasiswa', 'required');
+        // $this->form_validation->set_rules('nimMahasiswa', 'NIM Mahasiswa', 'required');
+        // $this->form_validation->set_rules('tanggalLahir', 'Tanggal Lahir', 'required');
+
+        // Check if form validation passes
+        if ($this->form_validation->run() == FALSE) {
+            // Validation failed, load the form with errors
+            $this->session->set_flashdata('message_form', [
+                'status' => 'danger',
+                'title' => 'Validation Error',
+                'message' => 'Please correct the errors in the form.'
+            ]);
+            redirect('sertifikat/Ppg/detail/' . $id);
+        } else {
+            // Data to be updated
+            $data = [
+                'nomorPpgMahasiswa' => $this->input->post('nomorPpgMahasiswa'),
+                'namaMahasiswa' => $this->input->post('namaMahasiswa'),
+                'tanggalLahir' => $this->input->post('tanggalLahir'),
+                'nimMahasiswa' => $this->input->post('nimMahasiswa'),
+                'kotaLahir' => $this->input->post('kotaLahir'),
+                'tanggalLahir' => $this->input->post('tanggalLahir'),
+                'namaGelarGuru' => $this->input->post('namaGelarGuru'),
+            ];
+
+            if ($_FILES['pathDocument']['name']) {
+                $config['upload_path'] = './uploads/sertifikat/ppg/sertifikat';
+                $config['allowed_types'] = 'pdf|doc|docx|jpg|jpeg|png';
+                $config['max_size'] = 4096; // Maximum file size (4MB)
+                $config['file_name'] = 'photo_' . encode(time()) . time();
+                $this->upload->initialize($config);
+
+                if ($this->upload->do_upload('pathDocument')) {
+                    $fileData = $this->upload->data();
+                    $data['pathDokumen'] = 'uploads/sertifikat/ppg/sertifikat/' . $fileData['file_name'];  // Save the file path
+                } else {
+                    $this->session->set_flashdata('message_form', [
+                        'status' => 'danger',
+                        'title' => 'File Upload Error',
+                        'message' => 'Error uploading document: ' . $this->upload->display_errors()
+                    ]);
+                    // redirect('sertifikat/Ppg/detail/' . $id);
+                }
+            }
+
+            // Update the record in the database
+            $update_successful = $this->M_Ppg->update_ppg($id, $data);
+
+            if ($update_successful) {
+                // Set a success message
+                $this->session->set_flashdata('message_form', [
+                    'status' => 'success',
+                    'title' => 'Update Successful',
+                    'message' => 'The record has been updated successfully.'
+                ]);
+                redirect('sertifikat/Ppg'); // Redirect to the index page
+            } else {
+                // Set an error message
+                $this->session->set_flashdata('message_form', [
+                    'status' => 'danger',
+                    'title' => 'Update Failed',
+                    'message' => 'There was an error updating the record.'
+                ]);
+                // redirect('sertifikat/Ppg/detail/' . $id); // Redirect back to the same form for corrections
+            }
+        }
+    }
 }

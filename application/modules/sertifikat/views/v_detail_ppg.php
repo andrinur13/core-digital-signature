@@ -20,8 +20,18 @@
         <form action="/index.php/sertifikat/Ppg/update/<?= $ppg->dokumenPpgId ?>" method="POST" enctype="multipart/form-data">
             <div class="form-row">
                 <div class="form-group col-12 col-lg-6 col-md-12 p-4">
+                    <label for="nomorDokumen">Nomor SK</label>
+                    <input type="text" class="form-control" id="nomorDokumen" name="nomorDokumen" placeholder="Masukkan Nomor SK Dokumen" required value="<?= $ppg->nomorDokumen ?>">
+                </div>
+
+                <div class="form-group col-12 col-lg-6 col-md-12 p-4">
                     <label for="unitParent" class="col-form-label require">Nomor Dokumen PPG</label><br>
                     <input name="nomorPpgMahasiswa" type="text" class="form-control" value="<?= $ppg->nomorPpgMahasiswa ?>">
+                </div>
+
+                <div class="form-group col-12 col-lg-6 col-md-12 p-4">
+                    <label for="unitParent" class="col-form-label require">Tgl Sertifikat PPG</label><br>
+                    <input name="tanggalSertifikat" type="date" class="form-control" value="<?= $ppg->tanggalSertifikat ?>">
                 </div>
 
                 <div class="form-group col-12 col-lg-6 col-md-12 p-4">

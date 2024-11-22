@@ -105,6 +105,8 @@ class Ppg extends Dashboard_Controller {
                 'pejabatanPenandatangan' => $this->input->post('pejabatanPenandatangan', TRUE),
                 'jabatanPenandatangan' => $this->input->post('jabatanPenandatangan', TRUE),
                 'nomorJabatanPenandatangan' => $this->input->post('nomorJabatanPenandatangan', TRUE),
+                'tanggalSertifikat' => $this->input->post('tanggalSertifikat', TRUE),
+                'nomorDokumen' => $this->input->post('nomorDokumen', TRUE),
 
             ];
 
@@ -488,6 +490,8 @@ class Ppg extends Dashboard_Controller {
                 'pejabatanPenandatangan' => $this->input->post('pejabatanPenandatangan'),
                 'jabatanPenandatangan' => $this->input->post('jabatanPenandatangan'),
                 'nomorJabatanPenandatangan' => $this->input->post('nomorJabatanPenandatangan'),
+                'tanggalSertifikat' => $this->input->post('tanggalSertifikat'),
+                'nomorDokumen' => $this->input->post('nomorDokumen'),
             ];
 
             if ($_FILES['pathDocument']['name']) {

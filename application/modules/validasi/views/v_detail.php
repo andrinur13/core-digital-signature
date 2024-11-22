@@ -56,16 +56,44 @@
                         <table class="table table-bordered">
                           <tbody>
                             <tr>
-                              <td class="col-3">Nomor Sertifikat</td>
+                              <td class="col-4">Nomor SK</td>
                               <td> <?= $ppg->nomorDokumen ?> </td>
                             </tr>
                             <tr>
-                              <td>Nama Pendidik</td>
+                              <td class="col-3">Nomor Sertifikat</td>
+                              <td> <?= $ppg->nomorPpgMahasiswa ?> </td>
+                            </tr>
+                            <tr>
+                              <td class="col-3">Tanggal Sertifikat</td>
+                              <td> <?= $ppg->tanggalSertifikat ?> </td>
+                            </tr>
+                            <tr>
+                              <td>Nama Sertifikat Pendidik</td>
                               <td> <?= $ppg->namaMahasiswa ?> </td>
                             </tr>
                             <tr>
-                              <td>NIM Mahasiswa</td>
+                              <td>NIM</td>
                               <td> <?= $ppg->nimMahasiswa ?> </td>
+                            </tr>
+                            <tr>
+                              <td>Program Studi</td>
+                              <td> Pendidikan Profesi Guru </td>
+                            </tr>
+                            <tr>
+                              <td>Bidang Studi</td>
+                              <td> <?= $ppg->namaGelarGuru ?> </td>
+                            </tr>
+                            <tr>
+                              <td>Jabatan Penandatangan</td>
+                              <td> <?= $ppg->jabatanPenandatangan ?> </td>
+                            </tr>
+                            <tr>
+                              <td>Penandatangan</td>
+                              <td> <?= $ppg->pejabatanPenandatangan ?> </td>
+                            </tr>
+                            <tr>
+                              <td>NIP</td>
+                              <td> <?= $ppg->nomorJabatanPenandatangan ?> </td>
                             </tr>
                             <tr>
                               <td>Digital Sertifikat</td>

@@ -99,8 +99,16 @@
             <form action="Ppg/add_certificate" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="nomorDokumen">Nomor SK</label>
+                        <input type="text" class="form-control" id="nomorDokumen" name="nomorDokumen" placeholder="Masukkan Nomor SK Dokumen" required>
+                    </div>
+                    <div class="form-group">
                         <label for="nomorPpgMahasiswa">Nomor Dokumen PPG</label>
                         <input type="text" class="form-control" id="nomorPpgMahasiswa" name="nomorPpgMahasiswa" placeholder="Masukkan Nomor Dokumen PPG" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggalSertifikat">Tgl Dokumen Sertifikat</label>
+                        <input type="date" class="form-control" id="tanggalSertifikat" name="tanggalSertifikat" placeholder="Masukkan Tgl Dokumen Sertifikat" required>
                     </div>
                     <div class="form-group">
                         <label for="namaMahasiswa">Nama Mahasiswa</label>

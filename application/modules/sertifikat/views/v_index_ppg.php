@@ -126,6 +126,18 @@
                         <label for="pathDokumen">Unggah Dokumen PPG</label>
                         <input type="file" class="form-control-file" id="pathDokumen" name="pathDokumen" required>
                     </div>
+                    <div class="form-group">
+                        <label for="pejabatanPenandatangan">Pejabat Penandatangan</label>
+                        <input type="text" class="form-control" id="pejabatanPenandatangan" name="pejabatanPenandatangan" placeholder="Ex: Prof. Dr. Muchlas. M.T." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jabatanPenandatangan">Jabatan Penandatangan</label>
+                        <input type="text" class="form-control" id="jabatanPenandatangan" name="jabatanPenandatangan" placeholder="Rektor UAD" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomorJabatanPenandatangan">Jabatan Penandatangan</label>
+                        <input type="text" class="form-control" id="nomorJabatanPenandatangan" name="nomorJabatanPenandatangan" placeholder="196202181987021001" required>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>

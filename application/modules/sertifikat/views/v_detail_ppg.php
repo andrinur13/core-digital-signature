@@ -56,6 +56,21 @@
                     <? endif; ?>
                     <input name="pathDocument" type="file" class="form-control">
                 </div>
+
+                <div class="form-group col-12 col-lg-6 col-md-12 p-4">
+                    <label for="unitParent" class="col-form-label require">Nama Pejabat Penandatangan</label><br>
+                    <input name="pejabatanPenandatangan" type="text" class="form-control" value="<?= $ppg->pejabatanPenandatangan ?>">
+                </div>
+
+                <div class="form-group col-12 col-lg-6 col-md-12 p-4">
+                    <label for="unitParent" class="col-form-label require">Jabatan Penandatangan</label><br>
+                    <input name="jabatanPenandatangan" type="text" class="form-control" value="<?= $ppg->jabatanPenandatangan ?>">
+                </div>
+
+                <div class="form-group col-12 col-lg-6 col-md-12 p-4">
+                    <label for="unitParent" class="col-form-label require">Nomor Jabatan Penandatangan</label><br>
+                    <input name="nomorJabatanPenandatangan" type="text" class="form-control" value="<?= $ppg->nomorJabatanPenandatangan ?>">
+                </div>
             </div>
 
             <div class="row">

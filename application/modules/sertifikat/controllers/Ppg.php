@@ -102,6 +102,10 @@ class Ppg extends Dashboard_Controller {
                 'tanggalSigned' => $this->input->post('tanggalSigned', TRUE),
                 'dokUserAddDate' => date('Y-m-d H:i:s'),
                 'dokUserUpdateDate' => date('Y-m-d H:i:s'),
+                'pejabatanPenandatangan' => $this->input->post('pejabatanPenandatangan', TRUE),
+                'jabatanPenandatangan' => $this->input->post('jabatanPenandatangan', TRUE),
+                'nomorJabatanPenandatangan' => $this->input->post('nomorJabatanPenandatangan', TRUE),
+
             ];
 
             $insert = $this->M_Ppg->insert_certificate($data);
@@ -481,6 +485,9 @@ class Ppg extends Dashboard_Controller {
                 'kotaLahir' => $this->input->post('kotaLahir'),
                 'tanggalLahir' => $this->input->post('tanggalLahir'),
                 'namaGelarGuru' => $this->input->post('namaGelarGuru'),
+                'pejabatanPenandatangan' => $this->input->post('pejabatanPenandatangan'),
+                'jabatanPenandatangan' => $this->input->post('jabatanPenandatangan'),
+                'nomorJabatanPenandatangan' => $this->input->post('nomorJabatanPenandatangan'),
             ];
 
             if ($_FILES['pathDocument']['name']) {

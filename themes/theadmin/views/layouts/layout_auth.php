@@ -12,10 +12,10 @@
       <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i" rel="stylesheet">
 
     <!-- Styles -->
-      <link href="<?php echo css_path('core.min.css', '_theme_'); ?>" rel="stylesheet">
-      <link href="<?php echo css_path('app.min.css', '_theme_'); ?>" rel="stylesheet">
-      <link href="<?php echo css_path('style.css', '_theme_'); ?>" rel="stylesheet">
-      <link href="<?= asset_path('/css/custom.css', '_theme_') ?>" rel="stylesheet" />
+    <link href="<?= asset_path('/css/core.min.css', '_theme_') ?>" rel="stylesheet" />
+    <link href="<?= asset_path('/css/app.css', '_theme_') ?>" rel="stylesheet" />
+    <link href="<?= asset_path('/css/style.css', '_theme_') ?>" rel="stylesheet" />
+    <link href="<?= asset_path('/css/custom.css', '_theme_') ?>" rel="stylesheet" />
 
        <!-- Favicons -->
        <link rel="apple-touch-icon" href="<?= asset_path('/img/logo-eoffice.svgg', '_theme_') ?>" />
@@ -37,7 +37,7 @@
     <script src="<?php echo js_path('core.min.js', '_theme_'); ?>"></script>
     <script src="<?php echo js_path('app.min.js', '_theme_'); ?>"></script>
     <script src="<?php echo js_path('script.js', '_theme_'); ?>"></script>
-    <script src="<?php echo js_path('script.js', '_theme_'); ?>"></script>
+    <script src="<?php echo js_path('custom.js', '_theme_'); ?>"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

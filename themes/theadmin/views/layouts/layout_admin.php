@@ -47,7 +47,7 @@
 
       <nav class="sidebar-navigation">
         <ul class="menu menu-sm menu-bordery">
-         <li class="menu-item">
+         <li class="menu-item <?php echo ($this->uri->segment(1) == 'dashboard' ) ? 'active' : ''; ?>"">
             <a class="menu-link" href="<?php echo site_url('dashboard/Dashboard/index') ?>">
               <span class="icon fa fa-home"></span>
               <span class="title">Dashboard</span>
@@ -60,15 +60,11 @@
       </nav>
 
 
-      <?php if ($this->authentication->is_logged_in()) {?>
-      <div class="align-items-center">
+    <?php if ($this->authentication->is_logged_in()) {?>
+    <div class="align-items-center">
         <div class="col-12">
           <div class="card card-bordered">
             <div class="card-body">
-              <div class="d-flex flex-column ">
-                <div class="d-flex justify-content-center">
-                  <img class="avatar avatar-xl avatar-bordered" src="<?= asset_path('/img/avatar/avatar.jpg', '_theme_') ?>"  alt="...">
-                </div>
                 <div class="scrollable d-flex flex-column justify-content-center">
                   <span class="fs-15 fw-700 color-primary"><?php echo get_user_real_name(); ?></span>
                   <?php
@@ -76,16 +72,14 @@
                   ?>
                   <span class="fs-10 color-primary"><?= get_user_unit_kode();?> (<?= get_user_unit_name();?>)</span>
                 </div>
-              </div>
+                <div class="text-center mt-2">
+                    <form action="<?php echo site_url('auth/logout') ?>">
+                      <button type="submit" class="text-danger fw-700 btn" ><i class="fa fa-sign-out"></i>  Logout</button>
+                    </form>
+                </div>
             </div>
           </div>
         </div>
-
-      <div class="row justify-content-center card-body">
-        <form action="<?php echo site_url('auth/logout') ?>">
-          <button type="submit" class="color-primary fw-700 btn" ><i class="fa fa-sign-out"></i>  Logout</button>
-        </form>
-      </div>
     </div>
     <?php } ?>
 
@@ -175,6 +169,7 @@
     <!-- Scripts -->
     <script src="<?php echo js_path('app.min.js', '_theme_'); ?>"></script>
     <script src="<?php echo js_path('script.js', '_theme_'); ?>"></script>
+    <script src="<?php echo js_path('custom.js', '_theme_'); ?>"></script>
 
 
 

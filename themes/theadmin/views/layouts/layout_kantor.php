@@ -217,6 +217,7 @@
   <script src="<?= asset_path('/js/core.min.js', '_theme_') ?>"></script>
   <script src="<?= asset_path('/js/app.js', '_theme_') ?>"></script>
   <script src="<?= asset_path('/js/script.js', '_theme_') ?>"></script>
+  <script src="<?= asset_path('/js/custom.js', '_theme_') ?>"></script>
 
   <!-- Transparant topbar saat scroll-->
   <script>

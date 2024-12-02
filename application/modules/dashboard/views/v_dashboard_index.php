@@ -18,7 +18,7 @@
               </div>
               <div class="col-12 col-lg-6 d-flex text-lg-left text-center flex-column align-self-center">
                 <span class="fs-15">Jumlah</span>
-                <span class="fs-15 fw-700">Unit</span>
+                <span class="fs-15 fw-700">Units</span>
               </div>
               <div class="col-12 col-lg-6 text-center align-self-center">
                 <div class="fs-40 fw-600 color-primary"><?= $jumlah_unit; ?></div>

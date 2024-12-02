@@ -45,13 +45,13 @@
                         <td> <?= $certificate->nomorPpgMahasiswa ?> </td>
                         <td> <?= $certificate->namaMahasiswa ?> </td>
                         <td>
-                            <?php if($certificate->pathDokumen): ?>
+                            <?php if($certificate->linkDokumen): ?>
                             <!-- Update the download link to trigger the modal -->
                             <button class="btn btn-sm btn-primary" 
                                     data-toggle="modal" 
                                     data-target="#certificatePreviewModal" 
-                                    data-image="<?= base_url($certificate->pathDokumen) ?>" 
-                                    data-download="<?= base_url($certificate->pathDokumen) ?>"> 
+                                    data-image="<?= base_url($certificate->linkDokumen) ?>" 
+                                    data-download="<?= base_url($certificate->linkDokumen) ?>"> 
                                 Lihat Dokumen 
                             </button> 
                             <?php else: ?>

@@ -22,16 +22,16 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                         
                         <?php echo form_open(site_url('auth/login'), ' class="form-type-round" id="form" role="form"'); ?>
                           <div class="form-group">
-                            <input type="text" class="form-control" id="username" value="<?php echo set_value('login');?>" autocomplete="off" accesskey="n" name="login">
+                            <input placeholder="Username" type="text" class="form-control" id="username" value="<?php echo set_value('login');?>" autocomplete="off" accesskey="n" name="login">
                             <?php echo (form_error('login') OR isset($errors['login'])) ? '<i class="ace-icon fa fa-times-circle"></i>' :''; ?>
                             <?php echo form_error('login'); ?>
                             <?php echo isset($errors['login'])? '<div class="help-block col-xs-12 col-sm-reset inline">' . $errors['login'] . '</div>':''; ?>
                           </div>
                           <div class="form-group">
-                                <input type="password" class="form-control" id="password" name="password" value="" autocomplete="off">
-                                <?php echo (form_error('password') OR isset($errors['password'])) ? '<i class="ace-icon fa fa-times-circle"></i>' :''; ?>
-                                <?php echo form_error('password'); ?>
-                                <?php echo isset($errors['password'])? '<div class="help-block col-xs-12 col-sm-reset inline">' . $errors['password'] . '</div>':''; ?>
+                            <input placeholder="Password" type="password" class="form-control" id="password" name="password" value="" autocomplete="off">
+                            <?php echo (form_error('password') OR isset($errors['password'])) ? '<i class="ace-icon fa fa-times-circle"></i>' :''; ?>
+                            <?php echo form_error('password'); ?>
+                            <?php echo isset($errors['password'])? '<div class="help-block col-xs-12 col-sm-reset inline">' . $errors['password'] . '</div>':''; ?>
                           </div>
                             <?php 
                                 if(isset($show_captcha)) {
@@ -70,7 +70,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                                 <?php
                                     } 
                                 ?>
-                          <hr class="w-30px">
+                            </div>
                           <div class="form-group">
                             <button class="btn btn-round btn-block btn-custom" type="submit">Login</button>
                           </div>

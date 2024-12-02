@@ -163,6 +163,7 @@
   <script src="<?php echo js_path('app.min.js', '_theme_'); ?>"></script>
   <script src="<?php echo js_path('script.js', '_theme_'); ?>"></script>
   <script src="<?php echo js_path('profiler.js', '_theme_'); ?>"></script>
+  <script src="<?php echo js_path('custom.js', '_theme_'); ?>"></script>
 
   <?php echo $template['partials']['modules_js']; ?>
 

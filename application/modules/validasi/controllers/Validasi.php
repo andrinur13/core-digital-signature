@@ -17,7 +17,7 @@ class Validasi extends Dashboard_Controller
     }
 
     public function detail($id) {
-        $idDecoded = decode($id);
+        $idDecoded = $id;
         $ppg = $this->M_Validasi->getDataDetailWithDocumentId($idDecoded);
 
         $data = [

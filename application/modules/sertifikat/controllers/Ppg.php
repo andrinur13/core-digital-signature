@@ -363,10 +363,35 @@ class Ppg extends Dashboard_Controller {
         return $randomString;
     }
 
+    public function generate_privy($id)
+    {
+
+
+        $data = $this->M_Ppg->getDataDetail($id);
+        
+        $this->load->library('Amqp');
+        $this->amqp->publish('golang_queue', json_encode([
+            'function' => 'GenerateCertificatePrivy',
+            'data' => $data->dokumenPpgId,
+        ]));
+
+        return redirect('sertifikat/Ppg');
+    }
+
     public function generate_detail($id)
     {
-        // Get data related to the certificate (e.g., student number, document path)
+
+
         $data = $this->M_Ppg->getDataDetail($id);
+        
+        $this->load->library('Amqp');
+        $this->amqp->publish('golang_queue', json_encode([
+            'function' => 'GenerateCertificateUAD',
+            'data' => $data->dokumenPpgId,
+        ]));
+
+        return redirect('sertifikat/Ppg');
+        
 
         // Generate QR Code (URL or text data to encode)
         $qrCode = new \Endroid\QrCode\QrCode('https://digi.andridev.id/index.php/validasi/' . encode($data->nomorPpgMahasiswa));
@@ -434,6 +459,42 @@ class Ppg extends Dashboard_Controller {
         $this->db->update('dokumen_ppg', $updateData);
 
         return redirect('sertifikat/Ppg');
+    }
+
+    public function upload_file_excel() {
+
+        // Load the upload library
+        $config['upload_path'] = './uploads';
+        $config['allowed_types'] = '*';
+        $config['file_name'] = 'file.xlsx';
+        $config['overwrite'] = true;
+
+        $this->upload->initialize($config);
+
+        if ($this->upload->do_upload('document')) { // Use 'document' as the field name
+            $this->load->library('Amqp');
+
+            $this->amqp->publish('golang_queue', json_encode([
+                'function' => 'InsertDocument',
+                'data' => NULL,
+            ]));
+
+            return redirect('sertifikat/ppg');
+
+        } else {
+            return redirect('sertifikat/ppg');
+        }
+    }
+
+    public function fetch_all_certificate_local() {
+        $this->load->library('Amqp');
+
+        $this->amqp->publish('golang_queue', json_encode([
+            'function' => 'FetchCertificateLocalAll',
+            'data' => NULL,
+        ]));
+
+        return redirect('sertifikat/ppg');
     }
 
     public function detail($id) {

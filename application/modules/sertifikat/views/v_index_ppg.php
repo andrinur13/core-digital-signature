@@ -20,6 +20,14 @@
                 Generate
                 <label><i class="ti-reload"></i></label>
             </a> -->
+            <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary">
+                Generate Sertifikat Lokal
+                <label><i class="ti-plus"></i></label>
+            </a>
+            <button type="button" id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addData">
+                Upload Data
+                <label><i class="ti-plus"></i></label>
+            </button>
             <button type="button" id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addCertificateModal">
                 Tambah Sertifikat
                 <label><i class="ti-plus"></i></label>
@@ -35,6 +43,7 @@
                     <th>Mahasiswa</th>
                     <th>File</th>
                     <th>File Signed</th>
+                    <th>File Privy</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -73,16 +82,51 @@
                             <?php endif ?>
                         </td>
                         <td>
+                            <?php if($certificate->pathDokumenSignedByPrivy): ?>
+                            <!-- Update the download link to trigger the modal -->
+                            <a target="blank" href="/<?= $certificate->pathDokumenSignedByPrivy ?>" class="btn btn-primary btn-sm">Lihat Dokumen</a>
+                            <?php else: ?>
+                            <span class="text-danger"> Dokumen Signed Privy Belum Ada </span>
+                            <?php endif ?>
+                        </td>
+                        <td>
                             <?php if(!$certificate->pathDokumenSigned) : ?>
                             <a title="Generate PDF" href="Ppg/generate_detail/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-primary"> Generate </a>
                             <a title="Edit Dokumen" href="Ppg/detail/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-secondary"> Edit </a>
                             <?php endif; ?>
+                            <a title="Generate PDF" href="Ppg/generate_privy/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-success"> Generate Privy </a>
                             <a title="Hapus" href="/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-danger"> Hapus </a>
                         </td>
+                        
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="modal fade" id="addData" tabindex="-1" role="dialog" aria-labelledby="addDataLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDataLabel">Tambah Upload File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="Ppg/upload_file_excel" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="document">Unggah File Excel</label>
+                        <input type="file" class="form-control-file" id="document" name="document" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -180,10 +224,87 @@
     </div>
 </div>
 
+<div class="modal fade" id="certificatePrivyModal" tabindex="-1" role="dialog" aria-labelledby="certificatePrivyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="certificatePrivyModalLabel">Lihat Sertifikat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <!-- PDF Viewer container -->
+                    <canvas id="certificate-pdf-viewer" style="width: 100%; height: auto;"></canvas>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <a id="downloadCertificate" href="#" class="btn btn-primary" download>Unduh Sertifikat</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 <script>
     // JavaScript to dynamically set the certificate source and preview PDF
 $('#certificatePreviewModal').on('show.bs.modal', function (e) {
+    var button = $(e.relatedTarget); // Button that triggered the modal
+    var pdfUrl = button.data('image'); // Extract PDF URL from data attribute
+    var downloadUrl = button.data('download'); // Extract download URL from data attribute
+
+    // Set the download link
+    $('#downloadCertificate').attr('href', downloadUrl);
+
+    // Get the canvas element and its context
+    var canvas = $('#certificate-pdf-viewer')[0];
+    var context = canvas.getContext('2d');
+
+    // Clear any previous content in the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas content
+    canvas.width = canvas.width; // Reset the width
+    canvas.height = canvas.height; // Reset the height
+
+    // If the PDF URL exists
+    if (pdfUrl) {
+        // Attempt to load the PDF
+        pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+            // Fetch the first page of the PDF
+            pdf.getPage(1).then(function(page) {
+                var viewport = page.getViewport({ scale: 1.5 });
+
+                // Set canvas size to match the PDF page
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                // Render the page into the canvas
+                page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                });
+            }).catch(function(error) {
+                // If there's an error rendering the PDF page
+                console.error('Error rendering PDF page: ', error);
+                // Draw the error message on the canvas
+                drawTextOnCanvas(context, canvas, 'Dokumen Tidak Ada');
+            });
+        }).catch(function(error) {
+            // If there's an error loading the PDF document
+            console.error('Error loading PDF: ', error);
+            // Draw the error message on the canvas
+            drawTextOnCanvas(context, canvas, 'Dokumen Tidak Ada');
+        });
+    } else {
+        // Handle case when there's no valid PDF URL (file missing or not a PDF)
+        drawTextOnCanvas(context, canvas, 'Dokumen Tidak Ada');
+    }
+});
+
+// JavaScript to dynamically set the certificate source and preview PDF for Privy
+$('#certificatePrivyModal').on('show.bs.modal', function (e) {
     var button = $(e.relatedTarget); // Button that triggered the modal
     var pdfUrl = button.data('image'); // Extract PDF URL from data attribute
     var downloadUrl = button.data('download'); // Extract download URL from data attribute

@@ -8,7 +8,7 @@ class M_Ppg extends CI_Model
 
         // Start the query to get data from dokumen_ppg table
         // Apply limit and offset for pagination
-        $this->db->limit($limit, $offset); 
+        // $this->db->limit($limit, $offset); 
         
         // If a status is provided, add a WHERE condition to filter by status
         if ($status !== NULL) {

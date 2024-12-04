@@ -378,6 +378,21 @@ class Ppg extends Dashboard_Controller {
         return redirect('sertifikat/Ppg');
     }
 
+    public function fetch_privy($id)
+    {
+
+
+        $data = $this->M_Ppg->getDataDetail($id);
+        
+        $this->load->library('Amqp');
+        $this->amqp->publish('golang_queue', json_encode([
+            'function' => 'FetchCertificatePrivy',
+            'data' => $data->dokumenPpgId,
+        ]));
+
+        return redirect('sertifikat/Ppg');
+    }
+
     public function generate_detail($id)
     {
 

@@ -43,6 +43,7 @@
                     <th>Mahasiswa</th>
                     <th>File</th>
                     <th>File Signed</th>
+                    <th>Doc Token Privy</th>
                     <th>File Privy</th>
                     <th>Aksi</th>
                 </tr>
@@ -82,6 +83,9 @@
                             <?php endif ?>
                         </td>
                         <td>
+                            <span> <?= $certificate->idExternalDokumen ?> </span>
+                        </td>
+                        <td>
                             <?php if($certificate->pathDokumenSignedByPrivy): ?>
                             <!-- Update the download link to trigger the modal -->
                             <a target="blank" href="/<?= $certificate->pathDokumenSignedByPrivy ?>" class="btn btn-primary btn-sm">Lihat Dokumen</a>
@@ -94,7 +98,12 @@
                             <a title="Generate PDF" href="Ppg/generate_detail/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-primary"> Generate </a>
                             <a title="Edit Dokumen" href="Ppg/detail/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-secondary"> Edit </a>
                             <?php endif; ?>
-                            <a title="Generate PDF" href="Ppg/generate_privy/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-success"> Generate Privy </a>
+                            <?php if(!$certificate->idExternalDokumen) : ?>
+                            <a title="Generate PDF" href="Ppg/generate_privy/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-success"> Proses Privy </a>
+                            <?php endif ?>
+                            <?php if($certificate->idExternalDokumen): ?>
+                            <a title="Generate PDF" href="Ppg/fetch_privy/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-primary"> Unduh PDF Privy </a>
+                            <?php endif ?>
                             <a title="Hapus" href="/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-danger"> Hapus </a>
                         </td>
                         

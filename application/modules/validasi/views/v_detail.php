@@ -102,7 +102,7 @@
                             </tr>
                             <tr>
                               <td class="fw-bold">Digital Sertifikat</td>
-                              <td> <a class="btn btn-sm btn-primary" href="https://super-app.privy.id/verification<?= $ppg->idExternalDokumen ?>" title="Link to Privy for certificate validation"><i class="bi bi-link-45deg me-2"></i>Link Ke Privy</a> </td>
+                              <td> <a class="btn btn-sm btn-primary" href="https://super-app.privy.id/verification/<?= $ppg->idExternalDokumen ?>" title="Link to Privy for certificate validation"><i class="bi bi-link-45deg me-2"></i>Link Ke Privy</a> </td>
                             </tr>
                           </tbody>
                         </table>

@@ -15,20 +15,39 @@
 <div class="card card-outline-primary">
     <div class="card-header">
         <h4 class="card-title"><strong>Data Sertifikat PPG</strong></h4>
+    </div>
+    <div class="card-header">
         <div class="btn-toolbar">
             <!-- <a id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary" href="Ppg/generate_all">
                 Generate
                 <label><i class="ti-reload"></i></label>
             </a> -->
-            <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary">
+            
+            <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
+                Fetch Sertifikat Lokal
+                <label><i class="ti-plus"></i></label>
+            </a>
+            <a href="Ppg/generate_all_certificate" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
                 Generate Sertifikat Lokal
                 <label><i class="ti-plus"></i></label>
             </a>
-            <button type="button" id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addData">
+            <a href="Ppg/generate_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
+                Generate Sertifikat Privy
+                <label><i class="ti-plus"></i></label>
+            </a>
+            <a href="Ppg/fetch_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
+                Fetch Sertifikat Privy
+                <label><i class="ti-plus"></i></label>
+            </a>
+            <a href="Ppg/download_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
+                Unduh Semua Sertifikat Privy
+                <label><i class="ti-plus"></i></label>
+            </a>
+            <button type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addData">
                 Upload Data
                 <label><i class="ti-plus"></i></label>
             </button>
-            <button type="button" id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addCertificateModal">
+            <button type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addCertificateModal">
                 Tambah Sertifikat
                 <label><i class="ti-plus"></i></label>
             </button>

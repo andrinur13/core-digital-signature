@@ -512,6 +512,80 @@ class Ppg extends Dashboard_Controller {
         return redirect('sertifikat/ppg');
     }
 
+    public function download_privy_all() {
+        $this->db->select('pathDokumenSignedByPrivy');
+        $this->db->from('dokumen_ppg');
+        $this->db->where('pathDokumenSignedByPrivy IS NOT NULL');
+        $query = $this->db->get();
+        $result = $query->result();
+
+        $zipName = 'dokumen_privy_' . date('YmdHis') . '.zip';
+        
+        $zip = new ZipArchive();
+        $zipPath = FCPATH . 'uploads/sertifikat/' . $zipName; // Lokasi sementara penyimpanan ZIP
+        if ($zip->open($zipPath, ZipArchive::CREATE) !== TRUE) {
+            show_error('Tidak dapat membuat file ZIP.');
+            return;
+        }
+
+        // Tambahkan file ke ZIP
+        foreach ($result as $row) {
+            $filePath = FCPATH . $row->pathDokumenSignedByPrivy;
+            if (file_exists($filePath)) {
+                $zip->addFile($filePath, basename($filePath)); // Tambahkan file ke ZIP
+            }
+        }
+
+        // Tutup ZIP
+        $zip->close();
+
+        // Cek apakah ZIP dibuat dengan sukses
+        if (!file_exists($zipPath)) {
+            show_error('Gagal membuat file ZIP.');
+            return;
+        }
+
+        // Berikan file ZIP untuk diunduh
+        $this->load->helper('download');
+        force_download($zipPath, NULL);
+
+        // Hapus file ZIP setelah diunduh
+        unlink($zipPath);
+    }
+
+    public function generate_all_certificate() {
+        $this->load->library('Amqp');
+
+        $this->amqp->publish('golang_queue', json_encode([
+            'function' => 'GenerateCertificateUADAll',
+            'data' => NULL,
+        ]));
+
+        return redirect('sertifikat/ppg');
+    }
+
+    public function fetch_privy_all() {
+        $this->load->library('Amqp');
+
+        $this->amqp->publish('golang_queue', json_encode([
+            'function' => 'FetchCertificatePrivyAll',
+            'data' => NULL,
+        ]));
+
+        return redirect('sertifikat/ppg');
+    }
+
+    public function generate_privy_all() {
+        $this->load->library('Amqp');
+
+        $this->amqp->publish('golang_queue', json_encode([
+            'function' => 'GenerateCertificatePrivyAll',
+            'data' => NULL,
+        ]));
+
+        return redirect('sertifikat/ppg');
+    }
+
     public function detail($id) {
         // Fetch data detail based on the ID
         $ppg = $this->M_Ppg->getDataDetail($id);

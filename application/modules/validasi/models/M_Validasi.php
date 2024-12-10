@@ -3,7 +3,7 @@
 class M_Validasi extends CI_Model
 {
     public function getDataDetailWithDocumentId($id) {
-        $query = $this->db->where('nomorPpgMahasiswa', $id)->get('dokumen_ppg');
+        $query = $this->db->where('kodeEncrypt', $id)->get('dokumen_ppg');
 
         if ($query->num_rows() > 0) {
             return $query->row();

@@ -17,40 +17,60 @@
         <h4 class="card-title"><strong>Data Sertifikat PPG</strong></h4>
     </div>
     <div class="card-header">
+        <hr>
         <div class="btn-toolbar">
+            <div class="row rounded">
+                <div class="col">
+                    <div class="p-2">
+                        <ol>
+                            <li>Silahkan Upload Dokumen Excel dan Pilih Batch/Periode</li>
+                            <li>Klik Buat Sertifikat Untuk Membuat Base Sertifikat</li>
+                            <li>Klik Proses Generate Sertifikat Untuk Melakukan Sign QR Code</li>
+                            <li>Klik Proses Sertifikat Privy Untuk Melakukan Proses Penandatanganan Ke Privy</li>
+                            <li>Klik Fetch Sertifiikat Privy Untuk Mengunduh Sertifikat PDF dari Privy</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
             <!-- <a id="add-btn" class="mx-1 btn btn-round btn-label btn-bold btn-primary" href="Ppg/generate_all">
                 Generate
                 <label><i class="ti-reload"></i></label>
             </a> -->
+
+            <div class="row">
+                <div class="col">
+
+                    <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
+                        Buat Sertifikat
+                        <label><i class="ti-plus"></i></label>
+                    </a>
+                    <a href="Ppg/generate_all_certificate" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
+                        Generate Sertifikat
+                        <label><i class="ti-plus"></i></label>
+                    </a>
+                    <a href="Ppg/generate_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
+                        Proses Sertifikat Privy
+                        <label><i class="ti-plus"></i></label>
+                    </a>
+                    <a href="Ppg/fetch_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
+                        Fetch Sertifikat Privy
+                        <label><i class="ti-plus"></i></label>
+                    </a>
+                    <a href="Ppg/download_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
+                        Unduh Semua Sertifikat Privy
+                        <label><i class="ti-plus"></i></label>
+                    </a>
+                    <button type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addData">
+                        Upload Data
+                        <label><i class="ti-plus"></i></label>
+                    </button>
+                    <button type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addCertificateModal">
+                        Tambah Sertifikat
+                        <label><i class="ti-plus"></i></label>
+                    </button>
+                </div>
+            </div>
             
-            <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
-                Fetch Sertifikat Lokal
-                <label><i class="ti-plus"></i></label>
-            </a>
-            <a href="Ppg/generate_all_certificate" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
-                Generate Sertifikat Lokal
-                <label><i class="ti-plus"></i></label>
-            </a>
-            <a href="Ppg/generate_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
-                Generate Sertifikat Privy
-                <label><i class="ti-plus"></i></label>
-            </a>
-            <a href="Ppg/fetch_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
-                Fetch Sertifikat Privy
-                <label><i class="ti-plus"></i></label>
-            </a>
-            <a href="Ppg/download_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
-                Unduh Semua Sertifikat Privy
-                <label><i class="ti-plus"></i></label>
-            </a>
-            <button type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addData">
-                Upload Data
-                <label><i class="ti-plus"></i></label>
-            </button>
-            <button type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addCertificateModal">
-                Tambah Sertifikat
-                <label><i class="ti-plus"></i></label>
-            </button>
         </div>
     </div>
     <div class="card-body" id="tbl-container" style="padding:0 !important;">

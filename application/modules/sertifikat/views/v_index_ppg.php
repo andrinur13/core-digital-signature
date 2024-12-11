@@ -83,6 +83,7 @@
                     <th>File</th>
                     <th>File Signed</th>
                     <th>Doc Token Privy</th>
+                    <th>Batch</th>
                     <th>File Privy</th>
                     <th>Aksi</th>
                 </tr>
@@ -123,6 +124,9 @@
                         </td>
                         <td>
                             <span> <?= $certificate->idExternalDokumen ?> </span>
+                        </td>
+                        <td>
+                            1
                         </td>
                         <td>
                             <?php if($certificate->pathDokumenSignedByPrivy): ?>

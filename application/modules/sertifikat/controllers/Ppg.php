@@ -492,6 +492,7 @@ class Ppg extends Dashboard_Controller {
             $this->amqp->publish('golang_queue', json_encode([
                 'function' => 'InsertDocument',
                 'data' => NULL,
+                'batch' => (int) $this->input->post('batch'),
             ]));
 
             return redirect('sertifikat/ppg');
@@ -507,6 +508,7 @@ class Ppg extends Dashboard_Controller {
         $this->amqp->publish('golang_queue', json_encode([
             'function' => 'FetchCertificateLocalAll',
             'data' => NULL,
+            'batch' => (int) $this->input->post('batch'),
         ]));
 
         return redirect('sertifikat/ppg');
@@ -559,6 +561,7 @@ class Ppg extends Dashboard_Controller {
         $this->amqp->publish('golang_queue', json_encode([
             'function' => 'GenerateCertificateUADAll',
             'data' => NULL,
+            'batch' => (int) $this->input->post('batch'),
         ]));
 
         return redirect('sertifikat/ppg');
@@ -570,6 +573,7 @@ class Ppg extends Dashboard_Controller {
         $this->amqp->publish('golang_queue', json_encode([
             'function' => 'FetchCertificatePrivyAll',
             'data' => NULL,
+            'batch' => (int) $this->input->post('batch'),
         ]));
 
         return redirect('sertifikat/ppg');
@@ -581,6 +585,7 @@ class Ppg extends Dashboard_Controller {
         $this->amqp->publish('golang_queue', json_encode([
             'function' => 'GenerateCertificatePrivyAll',
             'data' => NULL,
+            'batch' => (int) $this->input->post('batch'),
         ]));
 
         return redirect('sertifikat/ppg');

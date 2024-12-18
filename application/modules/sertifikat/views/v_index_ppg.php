@@ -40,22 +40,39 @@
             <div class="row">
                 <div class="col">
 
-                    <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="my-2 btn btn-custom">
+                    <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addCertificate">
+                        Buat Sertifikat
+                    </button>
+
+                    <!-- <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Buat Sertifikat +
                         
-                    </a>
-                    <a href="Ppg/generate_all_certificate" type="button" id="add-btn" class="my-2 btn btn-custom">
+                    </a> -->
+                    
+                    <!-- <a href="Ppg/generate_all_certificate" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Generate Sertifikat +
-                        
-                    </a>
-                    <a href="Ppg/generate_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
+                    </a> -->
+                    <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#generateCertificate">
+                        Generate Sertifikat
+                    </button>
+
+                    <!-- <a href="Ppg/generate_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Proses Sertifikat Privy +
-                        
-                    </a>
-                    <a href="Ppg/fetch_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
+                    </a> -->
+                    <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#processCertificatePrivy">
+                        Proses Sertifikat Privy
+                    </button>
+
+                    <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#fetchPrivyAll">
+                        Fetch Sertifikat Privy +
+                    </button>
+
+                    <!-- fetchPrivyAll -->
+
+                    <!-- <a href="Ppg/fetch_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Fetch Sertifikat Privy +
                         
-                    </a>
+                    </a> -->
                     <a href="Ppg/download_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Unduh Semua Sertifikat Privy +
                         
@@ -127,7 +144,7 @@
                             <span> <?= $certificate->idExternalDokumen ?> </span>
                         </td>
                         <td>
-                            1
+                            <span> <?= $certificate->batch ?> </span>
                         </td>
                         <td>
                             <?php if($certificate->pathDokumenSignedByPrivy): ?>
@@ -139,16 +156,16 @@
                         </td>
                         <td>
                             <?php if(!$certificate->pathDokumenSigned) : ?>
-                            <a title="Generate PDF" href="Ppg/generate_detail/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-primary"> Generate </a>
-                            <a title="Edit Dokumen" href="Ppg/detail/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-secondary"> Edit </a>
+                            <a title="Generate PDF" href="Ppg/generate_detail/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-primary"> Generate </a>
+                            <a title="Edit Dokumen" href="Ppg/detail/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-secondary"> Edit </a>
                             <?php endif; ?>
                             <?php if(!$certificate->idExternalDokumen) : ?>
-                            <a title="Generate PDF" href="Ppg/generate_privy/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-success"> Proses Privy </a>
+                            <a title="Generate PDF" href="Ppg/generate_privy/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-success"> Proses Privy </a>
                             <?php endif ?>
                             <?php if($certificate->idExternalDokumen): ?>
-                            <a title="Generate PDF" href="Ppg/fetch_privy/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-primary"> Unduh PDF Privy </a>
+                            <a title="Generate PDF" href="Ppg/fetch_privy/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-primary"> Unduh PDF Privy </a>
                             <?php endif ?>
-                            <a title="Hapus" href="/<?= $certificate->dokumenPpgId ?>" class="btn btn-sm btn-danger"> Hapus </a>
+                            <a title="Hapus" href="/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-danger"> Hapus </a>
                         </td>
                         
                     </tr>
@@ -171,9 +188,154 @@
             <form action="Ppg/upload_file_excel" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="document">Unggah File Excel</label>
+                        <label for="">Unggah File Excel</label>
                         <input type="file" class="form-control-file" id="document" name="document" required>
                     </div>
+
+                    <div class="form-group">
+                        <label for="document">Batch/Periode. (Tulis Dengan Angka Saja)</label>
+                        <input type="number" class="form-control" id="batch" name="batch" placeholder="" required>
+                    </div>
+
+                    <script>
+                        document.addEventListener("wheel", function(event){
+                            if(document.activeElement.type === "number"){
+                                document.activeElement.blur();
+                            }
+                        });
+                    </script>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addCertificate" tabindex="-1" role="dialog" aria-labelledby="addDataLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDataLabel">Buat Sertifikat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="Ppg/fetch_all_certificate_local" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Batch/Periode. (Tulis Dengan Angka Saja)</label>
+                        <input type="number" class="form-control" id="batch" name="batch" placeholder="" required>
+                    </div>
+
+                    <script>
+                        document.addEventListener("wheel", function(event){
+                            if(document.activeElement.type === "number"){
+                                document.activeElement.blur();
+                            }
+                        });
+                    </script>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="generateCertificate" tabindex="-1" role="dialog" aria-labelledby="addDataLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDataLabel">Generate Sertifikat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="Ppg/generate_all_certificate" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Batch/Periode. (Tulis Dengan Angka Saja)</label>
+                        <input type="number" class="form-control" id="batch" name="batch" placeholder="" required>
+                    </div>
+
+                    <script>
+                        document.addEventListener("wheel", function(event){
+                            if(document.activeElement.type === "number"){
+                                document.activeElement.blur();
+                            }
+                        });
+                    </script>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="processCertificatePrivy" tabindex="-1" role="dialog" aria-labelledby="addDataLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDataLabel">Generate Sertifikat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="Ppg/generate_privy_all" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Batch/Periode. (Tulis Dengan Angka Saja)</label>
+                        <input type="number" class="form-control" id="batch" name="batch" placeholder="" required>
+                    </div>
+
+                    <script>
+                        document.addEventListener("wheel", function(event){
+                            if(document.activeElement.type === "number"){
+                                document.activeElement.blur();
+                            }
+                        });
+                    </script>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="fetchPrivyAll" tabindex="-1" role="dialog" aria-labelledby="addDataLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDataLabel">Fetch Sertifikat Privy</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="Ppg/fetch_privy_all" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Batch/Periode. (Tulis Dengan Angka Saja)</label>
+                        <input type="number" class="form-control" id="batch" name="batch" placeholder="" required>
+                    </div>
+
+                    <script>
+                        document.addEventListener("wheel", function(event){
+                            if(document.activeElement.type === "number"){
+                                document.activeElement.blur();
+                            }
+                        });
+                    </script>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -253,6 +415,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Modal for Certificate Preview -->
 <div class="modal fade" id="certificatePreviewModal" tabindex="-1" role="dialog" aria-labelledby="certificatePreviewModalLabel" aria-hidden="true">

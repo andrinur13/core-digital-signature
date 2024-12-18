@@ -12,13 +12,12 @@
 </div>
 
 <?php } ?>
-<div class="card card-outline-primary">
+<div class="card card-bordered +">
 	<div class="card-header">
 		<h4 class="card-title"><strong>Data Pengguna</strong></h4>
       <div class="btn-toolbar">
-         <a id="add-btn" class="btn btn-round btn-label btn-bold btn-primary" href="<?php echo site_url($module.'/add')?>" title="Tambah Data User" data-provide="tooltip">
-            Tambah User
-            <label><i class="ti-plus"></i></label>
+         <a id="add-btn" class="btn btn-custom" href="<?php echo site_url($module.'/add')?>" title="Tambah Data User" data-provide="tooltip">
+            Tambah User +
          </a>
           
         </div>

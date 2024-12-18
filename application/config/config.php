@@ -32,7 +32,7 @@ $config['modules_locations'] = array(
 // $config['base_url'] .= "://" . $_SERVER['HTTP_HOST'];
 // $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
 
-$config['base_url'] = 'http://localhost:8080/';
+$config['base_url'] = 'https://digi.andridev.id';
 
 /*
 |--------------------------------------------------------------------------

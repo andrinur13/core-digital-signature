@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access alloweds');?>
-<div class="card card-outline-primary">
+<div class="card card-bordered">
     <div class="card-header border-info">
 		<h4 class="card-title"><strong><?= $template['title']; ?></strong></h4>
         <div class="card-header-actions" id="actionButton">

@@ -13,9 +13,6 @@
         <div class="card card-bordered">
           <div class="card-body">
             <div class="row">
-              <div class="col-12 col-lg-12 text-center">
-                <img src="<?= asset_path('img/icon/unit.png', '_theme_') ?>" class="shadow-custom" style="width: 150px">
-              </div>
               <div class="col-12 col-lg-6 d-flex text-lg-left text-center flex-column align-self-center">
                 <span class="fs-15">Jumlah</span>
                 <span class="fs-15 fw-700">Units</span>
@@ -32,9 +29,6 @@
         <div class="card card-bordered">
           <div class="card-body">
             <div class="row">
-              <div class="col-12 col-lg-12 text-center">
-                <img src="<?= asset_path('img/icon/users.png', '_theme_') ?>" class="shadow-custom" style="width: 150px">
-              </div>
               <div class="col-12 col-lg-6 d-flex text-lg-left text-center flex-column align-self-center">
                 <span class="fs-15">Jumlah</span>
                 <span class="fs-15 fw-700">Pengguna</span>

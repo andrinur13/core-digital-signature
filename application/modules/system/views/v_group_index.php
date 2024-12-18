@@ -19,12 +19,11 @@ $(function() {
 </div>
 
 <?php } ?>
-<div class="card card-outline-primary">
+<div class="card card-bordered">
 	<div class="card-header">
 		<h4 class="card-title">Data Grup Pengguna</h4>
-		<a id="add-btn" class="btn btn-round btn-label btn-bold btn-primary" href="#">
-			Tambah
-			<label><i class="ti-plus"></i></label>
+		<a id="add-btn" class="btn btn-custom" href="#">
+			Tambah +
 		</a>
 	</div>
 

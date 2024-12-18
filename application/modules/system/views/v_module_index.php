@@ -11,13 +11,12 @@
 </div>
 
 <?php } ?>
-<div class="card card-outline-primary">
+<div class="card card-bordered">
    <div class="card-header">
       <h4 class="card-title"><strong>Data Menu Module</strong></h4>
       <div class="btn-toolbar">
-         <a id="add-btn" class="btn btn-round btn-label btn-bold btn-primary" href="<?php echo site_url($module . '/add_menu') ?>">
-            Tambah Menu
-            <label><i class="ti-plus"></i></label>
+         <a id="add-btn" class="btn btn-custom" href="<?php echo site_url($module . '/add_menu') ?>">
+            Tambah Menu +
          </a>
         </div>
       </a>

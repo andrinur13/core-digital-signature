@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
-<div class="card card-outline-primary">
+<div class="card card-bordered">
 	<div class="card-header">
 		<h4 class="card-title">Ubah Pengaturan "<?php echo $data->ConfigName;?>"</h4>
 		<div class="btn-toolbar"></div>

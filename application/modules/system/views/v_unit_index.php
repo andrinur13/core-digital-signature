@@ -41,18 +41,17 @@
 
 <?php } ?>
 
-<div class="card card-outline-primary">
+<div class="card card-bordered">
 	<div class="card-header">
 		<h4 class="card-title"><strong>Data Unit</strong></h4>
       	<div class="btn-toolbar">
-			<a id="add-btn" class="btn btn-round btn-label btn-bold btn-primary" data-original-title="Tambah data unit kerja." data-rel="tooltip" data-placement="bottom" href="#">
-				Tambah Data
-				<label><i class="ti-plus"></i></label>
+			<a id="add-btn" class="btn btn-custom" data-original-title="Tambah data unit kerja." data-rel="tooltip" data-placement="bottom" href="#">
+				Tambah Data +
 			</a>
         </div>
 	</div>
-	<div class="card-body" id="tbl-container" style="padding:0 !important;">
-		<table id="t-unit-kerja" class="table table-separated table-striped tab" width="100%">
+	<div class="card-body">
+		<table id="t-unit-kerja" class="table table-separated table-striped tab">
 			<thead class="bg-color-primary1">
 				<tr>
 					<th>Kode Unit</th>

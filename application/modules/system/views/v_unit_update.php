@@ -6,7 +6,7 @@
 </script>
 
 
-<div class="card card-outline-primary">
+<div class="card card-bordered">
 	<div class="card-header">
 		<h4 class="card-title"><strong>Ubah Unit</strong></h4>
       	<div class="btn-toolbar">

@@ -12,7 +12,7 @@
 </div>
 <?php } ?>
 
-<div class="card card-outline-primary">
+<div class="card card-bordered">
     <div class="card-header">
         <h4 class="card-title"><strong>Data Sertifikat PPG</strong></h4>
     </div>

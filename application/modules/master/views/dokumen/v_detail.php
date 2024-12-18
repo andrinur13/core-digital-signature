@@ -176,7 +176,7 @@
   </style>
 <div class="row">
     <div class="col-lg-4">
-    <div class="card card-outline-primary">
+    <div class="card bordered">
               <h4 class="card-title">Notifications</h4>
 
 
@@ -247,7 +247,7 @@
             </div>
     </div>
     <div class="col-lg-8">
-        <div class="card card-outline-primary">
+        <div class="card card-bordered">
             <div class="card-header">
                 <h4 class="card-title"><strong><?= $template['title']; ?></strong></h4>
                 <div class="card-header-actions" id="actionButton">

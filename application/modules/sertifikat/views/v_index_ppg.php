@@ -12,7 +12,7 @@
 </div>
 <?php } ?>
 
-<div class="card card-outline-primary">
+<div class="card card-bordered">
     <div class="card-header">
         <h4 class="card-title"><strong>Data Sertifikat PPG</strong></h4>
     </div>
@@ -40,41 +40,42 @@
             <div class="row">
                 <div class="col">
 
-                    <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
-                        Buat Sertifikat
-                        <label><i class="ti-plus"></i></label>
+                    <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="btn btn-custom">
+                        Buat Sertifikat +
+                        
                     </a>
-                    <a href="Ppg/generate_all_certificate" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
-                        Generate Sertifikat
-                        <label><i class="ti-plus"></i></label>
+                    <a href="Ppg/generate_all_certificate" type="button" id="add-btn" class="btn btn-custom">
+                        Generate Sertifikat +
+                        
                     </a>
-                    <a href="Ppg/generate_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
-                        Proses Sertifikat Privy
-                        <label><i class="ti-plus"></i></label>
+                    <a href="Ppg/generate_privy_all" type="button" id="add-btn" class="btn btn-custom">
+                        Proses Sertifikat Privy +
+                        
                     </a>
-                    <a href="Ppg/fetch_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
-                        Fetch Sertifikat Privy
-                        <label><i class="ti-plus"></i></label>
+                    <a href="Ppg/fetch_privy_all" type="button" id="add-btn" class="btn btn-custom">
+                        Fetch Sertifikat Privy +
+                        
                     </a>
-                    <a href="Ppg/download_privy_all" type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary">
-                        Unduh Semua Sertifikat Privy
-                        <label><i class="ti-plus"></i></label>
+                    <a href="Ppg/download_privy_all" type="button" id="add-btn" class="btn btn-custom">
+                        Unduh Semua Sertifikat Privy +
+                        
                     </a>
-                    <button type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addData">
-                        Upload Data
-                        <label><i class="ti-plus"></i></label>
+                    <button type="button" id="add-btn" class="btn btn-custom" data-toggle="modal" data-target="#addData">
+                        Upload Data +
+                        
                     </button>
-                    <button type="button" id="add-btn" class="my-2 mx-1 btn btn-round btn-label btn-bold btn-primary" data-toggle="modal" data-target="#addCertificateModal">
-                        Tambah Sertifikat
-                        <label><i class="ti-plus"></i></label>
+                    <button type="button" id="add-btn" class="btn btn-custom" data-toggle="modal" data-target="#addCertificateModal">
+                        Tambah Sertifikat +
+                        
                     </button>
                 </div>
             </div>
             
         </div>
     </div>
-    <div class="card-body" id="tbl-container" style="padding:0 !important;">
-        <table id="t-unit-kerja" class="table table-separated table-striped tab" width="100%">
+    <div class="card-body" id="tbl-container">
+        <div class="table-responsive">
+            <table id="t-unit-kerja" class="table table-separated table-striped tab">
             <thead class="bg-color-primary1">
                 <tr>
                     <th>No</th>
@@ -154,6 +155,7 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 

@@ -13,7 +13,7 @@
 
 <?php } ?>
 
-<div class="card box">
+<div class="card box card-bordered">
 	<div class="card-header">
 		<h4 class="card-title">
 		<button class="btn btn-default btn-round" data-provide="tooltip" data-placement="top" title="" data-original-title="Kembali" onclick="history.back();"><i class="fa fa-arrow-left"></i></button>

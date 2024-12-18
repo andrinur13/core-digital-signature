@@ -55,6 +55,23 @@
           </li>
          <li class="menu-category">Menu App</li>
 
+         <li class="menu-item '.$active.'">
+            <a class="menu-link" href="#">
+              <span class="icon fa fa-database"></span>
+              <span class="title">Tanda Tangan Digital</span>
+              <span class="arrow"></span>
+            </a>
+
+            <ul class="menu-submenu">
+              <li class="menu-item ">
+                <a class="menu-link" href="/sertifikat/Ppg">
+                  <span class="dot"></span>
+                  <span class="title">Sertifikat PPG</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
           <?php echo $this->authentication->render_menu('1');?>
         </ul>
       </nav>

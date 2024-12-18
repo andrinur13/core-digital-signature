@@ -40,31 +40,31 @@
             <div class="row">
                 <div class="col">
 
-                    <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="btn btn-custom">
+                    <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Buat Sertifikat +
                         
                     </a>
-                    <a href="Ppg/generate_all_certificate" type="button" id="add-btn" class="btn btn-custom">
+                    <a href="Ppg/generate_all_certificate" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Generate Sertifikat +
                         
                     </a>
-                    <a href="Ppg/generate_privy_all" type="button" id="add-btn" class="btn btn-custom">
+                    <a href="Ppg/generate_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Proses Sertifikat Privy +
                         
                     </a>
-                    <a href="Ppg/fetch_privy_all" type="button" id="add-btn" class="btn btn-custom">
+                    <a href="Ppg/fetch_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Fetch Sertifikat Privy +
                         
                     </a>
-                    <a href="Ppg/download_privy_all" type="button" id="add-btn" class="btn btn-custom">
+                    <a href="Ppg/download_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Unduh Semua Sertifikat Privy +
                         
                     </a>
-                    <button type="button" id="add-btn" class="btn btn-custom" data-toggle="modal" data-target="#addData">
+                    <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addData">
                         Upload Data +
                         
                     </button>
-                    <button type="button" id="add-btn" class="btn btn-custom" data-toggle="modal" data-target="#addCertificateModal">
+                    <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addCertificateModal">
                         Tambah Sertifikat +
                         
                     </button>

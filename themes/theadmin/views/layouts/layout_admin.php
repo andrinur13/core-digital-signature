@@ -64,7 +64,7 @@
 
             <ul class="menu-submenu">
               <li class="menu-item ">
-                <a class="menu-link" href="/sertifikat/Ppg">
+                <a class="menu-link" href="<?= site_url('sertifikat/Ppg') ?>">
                   <span class="dot"></span>
                   <span class="title">Sertifikat PPG</span>
                 </a>

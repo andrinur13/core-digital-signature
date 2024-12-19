@@ -45,9 +45,8 @@
                             </div>
                              <div class="col-lg-6 d-flex mb-4 mb-lg-0 order-1 order-md-2 justify-content-center justify-content-lg-end">
                                 <div>
-                                    <img class="mr-2" src="/themes/theadmin/img/logo-eoffice.svg" alt=""> 
+                                    <img class="mr-2 img-fluid" style="max-width: 300px;" src="/assets/img/uad-logo.png" alt=""> 
                                 </div>
-                                <div class="h3 align-self-center"><span class="fw-bold ">UAD</span>Sign</div>
                             </div>
                         </div>
                         

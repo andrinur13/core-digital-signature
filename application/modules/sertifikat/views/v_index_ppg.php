@@ -81,10 +81,10 @@
                         Upload Data +
                         
                     </button>
-                    <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addCertificateModal">
+                    <!-- <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addCertificateModal">
                         Tambah Sertifikat +
                         
-                    </button>
+                    </button> -->
                 </div>
             </div>
             
@@ -155,8 +155,11 @@
                             <?php endif ?>
                         </td>
                         <td>
+                            <?php if($certificate->linkDokumen == null) : ?>
+                            <a title="Create PDF" href="Ppg/generate_base_certificate/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-primary"> Generate PDF </a>
+                            <?php endif; ?>
                             <?php if(!$certificate->pathDokumenSigned) : ?>
-                            <a title="Generate PDF" href="Ppg/generate_detail/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-primary"> Generate </a>
+                            <a title="Generate PDF" href="Ppg/generate_detail/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-primary"> Generate QR </a>
                             <a title="Edit Dokumen" href="Ppg/detail/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-secondary"> Edit </a>
                             <?php endif; ?>
                             <?php if(!$certificate->idExternalDokumen) : ?>
@@ -165,7 +168,7 @@
                             <?php if($certificate->idExternalDokumen): ?>
                             <a title="Generate PDF" href="Ppg/fetch_privy/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-primary"> Unduh PDF Privy </a>
                             <?php endif ?>
-                            <a title="Hapus" href="/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-danger"> Hapus </a>
+                            <a title="Hapus" href="Ppg/delete/<?= $certificate->dokumenPpgId ?>" class="mt-2 btn btn-sm btn-danger"> Hapus </a>
                         </td>
                         
                     </tr>
@@ -348,7 +351,7 @@
 
 <!-- Modal for Image Preview -->
 <div class="modal fade" id="addCertificateModal" tabindex="-1" role="dialog" aria-labelledby="addCertificateModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addCertificateModalLabel">Tambah Sertifikat</h5>
@@ -358,53 +361,81 @@
             </div>
             <form action="Ppg/add_certificate" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nomorDokumen">Nomor SK</label>
-                        <input type="text" class="form-control" id="nomorDokumen" name="nomorDokumen" placeholder="Masukkan Nomor SK Dokumen" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nomorPpgMahasiswa">Nomor Dokumen PPG</label>
-                        <input type="text" class="form-control" id="nomorPpgMahasiswa" name="nomorPpgMahasiswa" placeholder="Masukkan Nomor Dokumen PPG" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tanggalSertifikat">Tgl Dokumen Sertifikat</label>
-                        <input type="date" class="form-control" id="tanggalSertifikat" name="tanggalSertifikat" placeholder="Masukkan Tgl Dokumen Sertifikat" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="namaMahasiswa">Nama Mahasiswa</label>
-                        <input type="text" class="form-control" id="namaMahasiswa" name="namaMahasiswa" placeholder="Masukkan Nama Mahasiswa" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nimMahasiswa">NIM Mahasiswa</label>
-                        <input type="text" class="form-control" id="nimMahasiswa" name="nimMahasiswa" placeholder="Masukkan NIM Mahasiswa" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="kotaLahir">Kota Lahir Mahasiswa</label>
-                        <input type="text" class="form-control" id="kotaLahir" name="kotaLahir" placeholder="Masukkan Kota Lahir Mahasiswa" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tanggalLahir">Tgl Lahir Mahasiswa</label>
-                        <input type="date" class="form-control" id="tanggalLahir" name="tanggalLahir" placeholder="Masukkan Tgl Lahir Mahasiswa" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="namaGelarGuru">Nama Gelar Guru (Bidang)</label>
-                        <input type="text" class="form-control" id="namaGelarGuru" name="namaGelarGuru" placeholder="Ex: Indonesia, Bahasa Inggris" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="pathDokumen">Unggah Dokumen PPG</label>
-                        <input type="file" class="form-control-file" id="pathDokumen" name="pathDokumen" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="pejabatanPenandatangan">Pejabat Penandatangan</label>
-                        <input type="text" class="form-control" id="pejabatanPenandatangan" name="pejabatanPenandatangan" placeholder="Ex: Prof. Dr. Muchlas. M.T." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="jabatanPenandatangan">Jabatan Penandatangan</label>
-                        <input type="text" class="form-control" id="jabatanPenandatangan" name="jabatanPenandatangan" placeholder="Rektor UAD" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nomorJabatanPenandatangan">Jabatan Penandatangan</label>
-                        <input type="text" class="form-control" id="nomorJabatanPenandatangan" name="nomorJabatanPenandatangan" placeholder="196202181987021001" required>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="nomorDokumen">Nomor SK</label>
+                            <input type="text" class="form-control" id="nomorDokumen" name="nomorDokumen" placeholder="Masukkan Nomor SK Dokumen" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="nomorPpgMahasiswa">Nomor Dokumen PPG</label>
+                            <input type="text" class="form-control" id="nomorPpgMahasiswa" name="nomorPpgMahasiswa" placeholder="Masukkan Nomor Dokumen PPG" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="tanggalSertifikat">Tgl Dokumen Sertifikat</label>
+                            <input type="date" class="form-control" id="tanggalSertifikat" name="tanggalSertifikat" placeholder="Masukkan Tgl Dokumen Sertifikat" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="namaMahasiswa">Nama Mahasiswa</label>
+                            <input type="text" class="form-control" id="namaMahasiswa" name="namaMahasiswa" placeholder="Masukkan Nama Mahasiswa" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="nimMahasiswa">NIM Mahasiswa</label>
+                            <input type="text" class="form-control" id="nimMahasiswa" name="nimMahasiswa" placeholder="Masukkan NIM Mahasiswa" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="nikMahasiswa">NIK Mahasiswa</label>
+                            <input type="text" class="form-control" id="nikMahasiswa" name="nikMahasiswa" placeholder="Masukkan NIK Mahasiswa" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="tanggalSertifikat">Tgl Sertifikat</label>
+                            <input type="text" class="form-control" id="tanggalSertifikat" name="tanggalSertifikat" placeholder="Masukkan Tanggal Sertifikat" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="tanggalSertifikat">Nomor Kelulusan</label>
+                            <input type="text" class="form-control" id="nomorKelulusan" name="nomorKelulusan" placeholder="Masukkan Nomor Kelulusan" required>
+                        </div>
+                        
+                        <div class="form-group col-6">
+                            <label for="kotaLahir">Kota Lahir Mahasiswa</label>
+                            <input type="text" class="form-control" id="kotaLahir" name="kotaLahir" placeholder="Masukkan Kota Lahir Mahasiswa" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="tanggalLahir">Tgl Lahir Mahasiswa</label>
+                            <input type="date" class="form-control" id="tanggalLahir" name="tanggalLahir" placeholder="Masukkan Tgl Lahir Mahasiswa" required>
+                        </div>
+    
+                        <div class="form-group col-6">
+                            <label for="photoProfilePath">Foto Profil</label>
+                            <input type="file" class="form-control" id="photoProfilePath" name="photoProfilePath" placeholder="Foto Profil" required>
+                        </div>
+    
+                        <div class="form-group col-6">
+                            <label for="qrCodePath">QR Code</label>
+                            <input type="file" class="form-control" id="qrCodePath" name="qrCodePath" placeholder="Foto QR Code" required>
+                        </div>
+    
+                        <div class="form-group col-6">
+                            <label for="barCodePath">Bar Code</label>
+                            <input type="file" class="form-control" id="barCodePath" name="barCodePath" placeholder="Foto BarCode" required>
+                        </div>
+    
+                        <div class="form-group col-6">
+                            <label for="namaGelarGuru">Nama Gelar Guru (Bidang)</label>
+                            <input type="text" class="form-control" id="namaGelarGuru" name="namaGelarGuru" placeholder="Ex: Indonesia, Bahasa Inggris" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="pejabatanPenandatangan">Pejabat Penandatangan</label>
+                            <input type="text" class="form-control" id="pejabatanPenandatangan" name="pejabatanPenandatangan" placeholder="Ex: Prof. Dr. Muchlas. M.T." required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="jabatanPenandatangan">Jabatan Penandatangan</label>
+                            <input type="text" class="form-control" id="jabatanPenandatangan" name="jabatanPenandatangan" placeholder="Rektor UAD" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="nomorJabatanPenandatangan">Nomor Jabatan Penandatangan</label>
+                            <input type="text" class="form-control" id="nomorJabatanPenandatangan" name="nomorJabatanPenandatangan" placeholder="196202181987021001" required>
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -40,8 +40,12 @@
             <div class="row">
                 <div class="col">
 
-                    <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addCertificate">
+                    <!-- <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addCertificate">
                         Buat Sertifikat
+                    </button> -->
+
+                    <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addCertificate">
+                        Download Sertifikat
                     </button>
 
                     <!-- <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="my-2 btn btn-custom">

@@ -51,54 +51,99 @@ class Ppg extends Dashboard_Controller {
 
     public function add_certificate() {
         // Validasi input
-        $this->form_validation->set_rules('nomorPpgMahasiswa', 'Nomor PPG Mahasiswa', 'required|trim');
-        $this->form_validation->set_rules('namaMahasiswa', 'Nama Mahasiswa', 'required|trim');
-        $this->form_validation->set_rules('nimMahasiswa', 'NIM Mahasiswa', 'required|trim');
-        $this->form_validation->set_rules('kotaLahir', 'Kota Lahir', 'required|trim');
-        $this->form_validation->set_rules('tanggalLahir', 'Tanggal Lahir', 'required|trim');
-        $this->form_validation->set_rules('namaGelarGuru', 'Nama Gelar Guru', 'required|trim');
+        // $this->form_validation->set_rules('nomorPpgMahasiswa', 'Nomor PPG Mahasiswa', 'required|trim');
+        // $this->form_validation->set_rules('namaMahasiswa', 'Nama Mahasiswa', 'required|trim');
+        // $this->form_validation->set_rules('nimMahasiswa', 'NIM Mahasiswa', 'required|trim');
+        // $this->form_validation->set_rules('kotaLahir', 'Kota Lahir', 'required|trim');
+        // $this->form_validation->set_rules('tanggalLahir', 'Tanggal Lahir', 'required|trim');
+        // $this->form_validation->set_rules('namaGelarGuru', 'Nama Gelar Guru', 'required|trim');
 
-        if ($this->form_validation->run() == FALSE) {
-            // Jika validasi gagal
-            $this->session->set_flashdata('message_form', [
-                'status' => 'danger',
-                'title' => 'Gagal!',
-                'message' => validation_errors()
-            ]);
-            redirect('sertifikat/Ppg');
-        }
+        // if ($this->form_validation->run() == FALSE) {
+        //     // Jika validasi gagal
+        //     $this->session->set_flashdata('message_form', [
+        //         'status' => 'danger',
+        //         'title' => 'Gagal!',
+        //         'message' => validation_errors()
+        //     ]);
+        //     redirect('sertifikat/Ppg');
+        // }
 
-        // Upload foto
-        $config['upload_path'] = './uploads/sertifikat/ppg/sertifikat/'; // Folder tujuan
-        $config['allowed_types'] = 'pdf'; // Format yang diizinkan
-        $config['max_size'] = 2048; // Maksimal ukuran file dalam KB (2MB)
-        $config['file_name'] = 'photo_' . encode(time()) . time(); // Nama file unik
+        // // Upload foto
+        // $config['upload_path'] = './uploads/sertifikat/ppg/sertifikat/'; // Folder tujuan
+        // $config['allowed_types'] = 'pdf'; // Format yang diizinkan
+        // $config['max_size'] = 2048; // Maksimal ukuran file dalam KB (2MB)
+        // $config['file_name'] = 'photo_' . md5(time()) . time(); // Nama file unik
 
-        $this->upload->initialize($config);
+        // $this->upload->initialize($config);
 
-        if (!$this->upload->do_upload('pathDokumen')) {
-            // Jika upload gagal
-            $this->session->set_flashdata('message_form', [
-                'status' => 'danger',
-                'title' => 'Gagal!',
-                'message' => $this->upload->display_errors()
-            ]);
+        if (false) {
+            dd("ok");
+            // // Jika upload gagal
+            // $this->session->set_flashdata('message_form', [
+            //     'status' => 'danger',
+            //     'title' => 'Gagal!',
+            //     'message' => $this->upload->display_errors()
+            // ]);
             redirect('sertifikat/Ppg');
         } else {
+            // dd("ok2");
+
             // Jika upload berhasil
-            $fileData = $this->upload->data();
-            $documentPath = 'uploads/sertifikat/ppg/sertifikat/' . $fileData['file_name']; // Simpan path file
+            // $fileData = $this->upload->data();
+            // $documentPath = 'uploads/sertifikat/ppg/sertifikat/' . $fileData['file_name']; // Simpan path file
+
+            // $config['upload_path'] = './uploads/'; // Ensure this folder exists and is writable
+            // $config['allowed_types'] = 'jpg|jpeg|png|pdf'; // Adjust file types as needed
+            // $config['max_size'] = 2048; // Max size in KB
+
+            $upload_paths = [
+                'photoProfilePath' => './uploads/sertifikat/ppg/photo/',
+                'qrCodePath' => './uploads/sertifikat/ppg/qrcode/',
+                'barCodePath' => './uploads/sertifikat/ppg/barcode/',
+            ];
+
+            // $this->load->library('upload', $config);
+            $uploaded_files = [];
+
+            // dd($this->input->post());
+
+            foreach ($upload_paths as $field => $path) {
+                if (!empty($_FILES[$field]['name'])) {
+                    // Set upload configurations dynamically
+                    $config['upload_path'] = $path;
+                    $config['allowed_types'] = 'jpg|jpeg|png|svg';
+                    // $config['max_size'] = 2048; // 2MB
+                    $config['file_name'] = time() . '_' . $_FILES[$field]['name'];
+    
+                    // Ensure the directory exists
+                    if (!is_dir($path)) {
+                        mkdir($path, 0777, true); // Create directory if it doesn't exist
+                    }
+    
+                    $this->upload->initialize($config);
+    
+                    if (!$this->upload->do_upload($field)) {
+                        dd($this->upload->display_errors());
+                        $this->session->set_flashdata('error', $this->upload->display_errors());
+                        redirect('sertifikat/Ppg');
+                    } else {
+                        $uploaded_files[$field] = $this->upload->data('file_name');
+                    }
+                }
+            }
 
             // Simpan data ke database
             $data = [
                 'nomorDokumen' => $this->input->post('nomorDokumen', TRUE),
                 'nomorPpgMahasiswa' => $this->input->post('nomorPpgMahasiswa', TRUE),
+                'tanggalSertifikat' => $this->input->post('tanggalSertifikat'),
                 'namaMahasiswa' => $this->input->post('namaMahasiswa', TRUE),
                 'nimMahasiswa' => $this->input->post('nimMahasiswa', TRUE),
+                'nikMahasiswa' => $this->input->post('nikMahasiswa', TRUE),
                 'kotaLahir' => $this->input->post('kotaLahir', TRUE),
                 'tanggalLahir' => $this->input->post('tanggalLahir', TRUE),
                 'namaGelarGuru' => $this->input->post('namaGelarGuru', TRUE),
-                'pathDokumen' => $documentPath,
+                // 'pathDokumen' => $documentPath,
                 'tanggalSigned' => $this->input->post('tanggalSigned', TRUE),
                 'dokUserAddDate' => date('Y-m-d H:i:s'),
                 'dokUserUpdateDate' => date('Y-m-d H:i:s'),
@@ -107,6 +152,10 @@ class Ppg extends Dashboard_Controller {
                 'nomorJabatanPenandatangan' => $this->input->post('nomorJabatanPenandatangan', TRUE),
                 'tanggalSertifikat' => $this->input->post('tanggalSertifikat', TRUE),
                 'nomorDokumen' => $this->input->post('nomorDokumen', TRUE),
+
+                'qrCodePath' => $uploaded_files['qrCodePath'] ? '/uploads/sertifikat/ppg/qrcode/' . $uploaded_files['qrCodePath'] :  null,
+                'barCodePath' => $uploaded_files['barCodePath'] ? '/uploads/sertifikat/ppg/barcode/' . $uploaded_files['barCodePath'] : null,
+                'photoProfilePath' => $uploaded_files['photoProfilePath'] ? '/uploads/sertifikat/ppg/photo/' . $uploaded_files['photoProfilePath']  : null,
 
             ];
 
@@ -393,6 +442,36 @@ class Ppg extends Dashboard_Controller {
         return redirect('sertifikat/Ppg');
     }
 
+    public function generate_base_certificate($id)
+    {
+
+
+        // $data = $this->M_Ppg->getDataDetail($id);
+
+        // $basedFile = "uploads/sertifikat/ppg/sertifikat/" . md5($data->dokumenPpgId . now());
+        // $pdfCreateFile = "../core-digital-signature/" . $basedFile . '.pdf';
+
+        // $jsonStringPayload = json_encode([
+        //     'pdfPath' => "../core-digital-signature/uploads/sertifikat/ppg/sertifikat/" . md5($data->dokumenPpgId . now()),
+        //     'outputOriginal' => $pdfCreateFile,
+        //     'outputPdfPath' => "../core-digital-signature/uploads/sertifikat/ppg/sertifikat-signed/" . md5($data->dokumenPpgId . now()),
+        //     'outputPath' => "uploads/sertifikat/ppg/sertifikat-signed/" . md5($data->dokumenPpgId . now()),
+        //     'qrData' => "https://sign.uad.ac.id/validation/" . $data->kodeEncrypt,
+        //     'id' => $id,
+        // ]);
+
+        $this->load->library('Amqp');
+        $this->amqp->publish('golang_queue', json_encode([
+            'function' => 'DownloadCertificateDikbud',
+            'data' => (string) $id,
+            'batch' => null,
+        ]));
+        
+        // $this->M_Ppg->update_ppg($id, $updateData);
+
+        return redirect('sertifikat/Ppg');
+    }
+
     public function generate_detail($id)
     {
 
@@ -506,7 +585,7 @@ class Ppg extends Dashboard_Controller {
         $this->load->library('Amqp');
 
         $this->amqp->publish('golang_queue', json_encode([
-            'function' => 'FetchCertificateLocalAll',
+            'function' => 'DownloadCertificateDikbudAll',
             'data' => NULL,
             'batch' => (int) $this->input->post('batch'),
         ]));
@@ -608,6 +687,14 @@ class Ppg extends Dashboard_Controller {
             
             $this->template->build('sertifikat/v_detail_ppg', $data);
         }
+    }
+
+    public function delete($id) {
+        $this->db->where('dokumenPpgId', $id)->delete('dokumen_ppg');
+
+        $this->session->set_flashdata('success', 'Data berhasil dihapus.');
+
+        return redirect('sertifikat/ppg');
     }
 
     public function update($id)

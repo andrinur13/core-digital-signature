@@ -52,7 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['login'] 	= 'auth/login';
 $route['logout'] 	= 'auth/logout';
-$route['validasi/(:any)'] 	= 'validasi/detail/$1';
+$route['validation/(:any)'] 	= 'validasi/detail/$1';
 
 $route['default_controller'] = 'auth/login';
 $route['404_override'] = '';

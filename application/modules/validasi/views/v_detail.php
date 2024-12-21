@@ -93,7 +93,7 @@
                     </div>
                     <div class="col-lg-6 mt-4 d-flex justify-content-center justify-content-lg-start">
                       <? if($ppg->idExternalDokumen) : ?>
-                      <p class=""><a class="btn btn-sm btn-custom" href="https://stg-web-apps-fe-carstensz.privy.id/verification/<?= $ppg->idExternalDokumen ?>" title="Link to Privy for certificate validation"><i class="bi bi-link-45deg me-2"></i>Digital Sertifikat Privy</a></p>
+                      <p class=""><a class="btn btn-sm btn-custom" href="https://super-app.privy.id/verification/<?= $ppg->idExternalDokumen ?>" title="Link to Privy for certificate validation"><i class="bi bi-link-45deg me-2"></i>Digital Sertifikat Privy</a></p>
                       <? endif; ?>
                     </div>
 

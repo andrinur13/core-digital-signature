@@ -45,7 +45,7 @@
                     </button> -->
 
                     <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addCertificate">
-                        Download Sertifikat
+                        Get PDF Serdik
                     </button>
 
                     <!-- <a href="Ppg/fetch_all_certificate_local" type="button" id="add-btn" class="my-2 btn btn-custom">
@@ -57,7 +57,7 @@
                         Generate Sertifikat +
                     </a> -->
                     <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#generateCertificate">
-                        Generate Sertifikat
+                        Proses QR Code Rektor
                     </button>
 
                     <!-- <a href="Ppg/generate_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
@@ -68,7 +68,7 @@
                     </button>
 
                     <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#fetchPrivyAll">
-                        Fetch Sertifikat Privy +
+                        Get PDF Privy
                     </button>
 
                     <!-- fetchPrivyAll -->
@@ -78,11 +78,10 @@
                         
                     </a> -->
                     <a href="Ppg/download_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
-                        Unduh Semua Sertifikat Privy +
-                        
+                        Unduh PDF Serdik Final
                     </a>
                     <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addData">
-                        Upload Data +
+                        Upload Data Serdik
                         
                     </button>
                     <!-- <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addCertificateModal">

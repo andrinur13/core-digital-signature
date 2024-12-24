@@ -65,25 +65,28 @@ class Auth extends Auth_Controller
 				
 				$data['use_recaptcha'] = $this->config->item('auth_use_recaptcha');
 				$data['show_captcha'] = FALSE;
-				if ($this->authentication->is_max_login_attempts_exceeded($login)) {
-					if ($data['use_recaptcha']) {
+				
+				// if ($this->authentication->is_max_login_attempts_exceeded($login)) {
+				// 	if ($data['use_recaptcha']) {
 						
-						$this->form_validation->set_rules('recaptcha_response_field', 'Kode keamanan', 'required|callback__check_recaptcha');
-					}
-					else {
-						$this->form_validation->set_rules('captcha', 'Kode keamanan', 'required|callback__check_captcha');
-					}
+				// 		$this->form_validation->set_rules('recaptcha_response_field', 'Kode keamanan', 'required|callback__check_recaptcha');
+				// 	}
+				// 	else {
+				// 		$this->form_validation->set_rules('captcha', 'Kode keamanan', 'required|callback__check_captcha');
+				// 	}
 				
 				
-					$data['show_captcha'] = TRUE;
-					if ($data['use_recaptcha']) {
-						$data['recaptcha_html'] = $this->_create_recaptcha();
-					} else {
-						$data['captcha_html'] = $this->_create_captcha();
-					}
-				}
+				// 	$data['show_captcha'] = TRUE;
+				// 	if ($data['use_recaptcha']) {
+				// 		$data['recaptcha_html'] = $this->_create_recaptcha();
+				// 	} else {
+				// 		$data['captcha_html'] = $this->_create_captcha();
+				// 	}
+				// }
+
 				$data['errors'] = array();
 				$this->form_validation->set_error_delimiters('<div class="help-block col-xs-12 col-sm-reset inline">', '</div>');
+				
 				if ($this->form_validation->run()) {
 					if ($this->authentication->login( $this->form_validation->set_value('login'), $this->form_validation->set_value('password'), $this->form_validation->set_value('remember'), $data['login_by_username'], $data['login_by_email']) == TRUE) {								// success
 						redirect('dashboard');

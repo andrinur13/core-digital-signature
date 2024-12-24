@@ -29,7 +29,8 @@ class Auth extends Auth_Controller
 		if ($this->authentication->is_logged_in()) {									// logged in
 			redirect($this->config->item('app_default_backend_controller'));
 		} else {
-			if( $this->config->item('cas_login_enable') == TRUE )
+			// if( $this->config->item('cas_login_enable') == TRUE )
+			if( false )
 			{
 				$this->load->library('cas');
 				$this->cas->force_auth();

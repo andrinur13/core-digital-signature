@@ -77,9 +77,13 @@
                         Fetch Sertifikat Privy +
                         
                     </a> -->
-                    <a href="Ppg/download_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
+                    <!-- <a href="Ppg/download_privy_all" type="button" id="add-btn" class="my-2 btn btn-custom">
                         Unduh PDF Serdik Final
-                    </a>
+                    </a> -->
+                    <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#downloadCertificatePrivy">
+                        Unduh PDF Serdik Final
+                    </button>
+
                     <button type="button" id="add-btn" class="my-2 btn btn-custom" data-toggle="modal" data-target="#addData">
                         Upload Data Serdik
                         
@@ -329,6 +333,39 @@
                 </button>
             </div>
             <form action="Ppg/fetch_privy_all" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Batch/Periode. (Tulis Dengan Angka Saja)</label>
+                        <input type="number" class="form-control" id="batch" name="batch" placeholder="" required>
+                    </div>
+
+                    <script>
+                        document.addEventListener("wheel", function(event){
+                            if(document.activeElement.type === "number"){
+                                document.activeElement.blur();
+                            }
+                        });
+                    </script>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="downloadCertificatePrivy" tabindex="-1" role="dialog" aria-labelledby="addDataLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDataLabel">Download Sertifikat Privy</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="Ppg/download_privy_batch" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">Batch/Periode. (Tulis Dengan Angka Saja)</label>

@@ -634,6 +634,50 @@ class Ppg extends Dashboard_Controller {
         unlink($zipPath);
     }
 
+    public function download_privy_batch() {
+        $batch = $this->input->post('batch');
+
+        $this->db->select('pathDokumenSignedByPrivy');
+        $this->db->from('dokumen_ppg');
+        $this->db->where('batch', $batch);
+        $this->db->where('pathDokumenSignedByPrivy IS NOT NULL');
+        $query = $this->db->get();
+        $result = $query->result();
+
+        $zipName = 'dokumen_privy_batch_' . $batch . '_' . date('YmdHis') . '.zip';
+        
+        $zip = new ZipArchive();
+        $zipPath = FCPATH . 'uploads/sertifikat/' . $zipName; // Lokasi sementara penyimpanan ZIP
+        if ($zip->open($zipPath, ZipArchive::CREATE) !== TRUE) {
+            show_error('Tidak dapat membuat file ZIP.');
+            return;
+        }
+
+        // Tambahkan file ke ZIP
+        foreach ($result as $row) {
+            $filePath = FCPATH . $row->pathDokumenSignedByPrivy;
+            if (file_exists($filePath)) {
+                $zip->addFile($filePath, basename($filePath)); // Tambahkan file ke ZIP
+            }
+        }
+
+        // Tutup ZIP
+        $zip->close();
+
+        // Cek apakah ZIP dibuat dengan sukses
+        if (!file_exists($zipPath)) {
+            show_error('Gagal membuat file ZIP.');
+            return;
+        }
+
+        // Berikan file ZIP untuk diunduh
+        $this->load->helper('download');
+        force_download($zipPath, NULL);
+
+        // Hapus file ZIP setelah diunduh
+        unlink($zipPath);
+    }
+
     public function generate_all_certificate() {
         $this->load->library('Amqp');
 

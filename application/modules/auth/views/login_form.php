@@ -33,29 +33,9 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                             <?php echo form_error('password'); ?>
                             <?php echo isset($errors['password'])? '<div class="help-block col-xs-12 col-sm-reset inline">' . $errors['password'] . '</div>':''; ?>
                           </div>
-                            <?php 
-                                if(isset($show_captcha)) {
-                                    if($show_captcha) {
-                                    if ($use_recaptcha) {
-                            ?>
-                            <div id="recaptcha_image"> </div>
-                            <label class="block">
-                                <?php echo form_error('_check_recaptcha'); ?>
-                                <?php echo $recaptcha_html; ?>
-                            </label>
-                            <?php } else { ?>
-                            <p class="text-center mt-10"><?php echo $captcha_html; ?></p>
-                            <div class="form-group">
-                                <input type="text" class="form-control text-center <?php echo (form_error('captcha') OR isset($errors['captcha'])) ? 'is-invalid' :''; ?>" name="captcha" autocomplete="off">
-                                <label class="text-center">Kode Keamanan</label>
-                                <small class="form-text">Silahkan masukkan kode keamanan yang terlihat pada gambar.</small>
-                                <div class="invalid-feedback"><?php echo form_error('captcha'); ?></div>
-                            </div>
-                            <?php 
-                                    }
-                                }
-                            }
-                            ?>
+                          
+                          
+
                             <div class="form-group flexbox">
                                 <label class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" name="remember" >
